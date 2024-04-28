@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clients</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    {% for el in clis %}
+    <p>{{ el }}</p>
+    <p>{{el.id}}</p>
+    <p>{{el.fullname}}</p>
+    <p>{{el.age}}</p>
+    <p>{{el.phone_number}}</p>
+    {% endfor %}
+</body>
+</html>

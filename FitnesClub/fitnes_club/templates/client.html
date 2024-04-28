@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> client </title>
+</head>
+<body>
+    <p>{{ cli }}</p>
+    <p>{{cli.id}}</p>
+    <p>{{cli.fullname}}</p>
+    <p>{{cli.age}}</p>
+    <p>{{cli.phone_number}}</p>
+    {% for group in groups %}
+        <p>{{ group }}</p>
+        <p>{{group.id}}</p>
+        <p>{{group.name}}</p>
+    {% endfor %}
+</body>
+</html>
