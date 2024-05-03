@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+</head>
+<header>
+    <a href="{% url 'info' %}"><button>О компании</button></a>
+    <a href="{% url 'news' %}"><button>Новости</button></a>
+    <a href="{% url 'faq' %}"><button>FAQ</button></a>
+    <a href="{% url 'employees' %}"><button>Сотрудники</button></a>
+    <a href="{% url 'vacancies' %}"><button>Вакансии</button></a>
+    <a href="{% url 'feedback' %}"><button>Отзывы</button></a>
+    <a href="{% url 'coupons' %}"><button>Купоны</button></a>
+    <a href="{% url 'fitness' %}"><button>ФитнесКлуб</button></a>
+</header>
+<body>
+<div align="center">
+    <h1>Глaвная</h1>
+    <p>Последняя опубликованная статья</p>
+    {% if article %}
+        <p>Дата публикации: {{article.date}}<p>
+        <p>Название: {{article.title}}</p>
+        <p>Описание: {{article.description}}</p>
+        <p>Текст: {{article.text}}</p>
+    {% else %}
+        <p>Статей пока не было(</p>
+    {% endif %}
+    {% if cat %}
+    <h2>Рандомный факт о кошках</h2>
+    <p>{{cat.fact}}</p>
+    {% endif %}
+    {% if dog %}
+    <h2>Рандомная фотография собаки</h2>
+    <img src="{{dog.message}}" width="300" height="300" style="object-fit:cover;">
+    {% endif %}
+</div>
+</body>
+</html>

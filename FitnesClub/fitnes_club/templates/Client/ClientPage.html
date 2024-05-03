@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Клиент</title>
+</head>
+<body>
+<a href="{% url 'logout' %}"><button>Выйти</button></a>
+<a href="{% url 'fitness' %}"><button>ФитнесКлуб</button></a>
+<p>Ваше имя: {{client.fullname}}</p>
+<p>Ваш возраст: {{client.age}}</p>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{% extends "ManyElements.html" %}
+{% block title %} Новости {% endblock title %}
+{% block header %} Новости {% endblock header %}
+{% block content %}
+    {% if news %}
+    {% for el in news%}
+    <p>Дата: {{el.date}}</p>
+    <p>Название: {{el.title}}</p>
+    {% if el.picture %}
+    <img src="{{el.picture.url}}">
+    {% else %}
+    <p>Картинка отсутствует(</p>
+    {% endif %}
+    <p>Описание: {{el.description}}</p>
+    <p>Текст: {{el.text}}</p>
+    <br/>
+    {% endfor %}
+    {% else %}
+    <p>Новостей няма(</p>
+    {% endif %}
+{% endblock content %}

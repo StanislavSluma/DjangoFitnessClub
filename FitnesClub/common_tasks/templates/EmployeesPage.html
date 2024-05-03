@@ -1,0 +1,19 @@
+{% extends "ManyElements.html" %}
+{% block title %} Сотрудники {% endblock title %}
+{% block header %} Сотрудники {% endblock header %}
+{% block content %}
+    {% if employees %}
+    {% for el in employees%}
+    <p>ФИО: {{el.fullname}}</p>
+    {% if el.photo %}
+    <img src="{{el.photo.url}}">
+    {% else %}
+    <p>Фото отсутствует(</p>
+    {% endif %}
+    <p>О себе: {{el.description}}</p>
+    <br/>
+    {% endfor %}
+    {% else %}
+    <p>Вы все уволены!</p>
+    {% endif %}
+{% endblock content %}

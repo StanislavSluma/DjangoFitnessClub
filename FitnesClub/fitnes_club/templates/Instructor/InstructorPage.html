@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Инструктор</title>
+</head>
+<body>
+<a href="{% url 'logout' %}"><button>Выйти</button></a>
+<a href="{% url 'fitness' %}"><button>ФитнесКлуб</button></a>
+<p>Ваше имя: {{instructor.fullname}}</p>
+<p>Ваш возраст: {{instructor.age}}</p>
+</body>
+</html>

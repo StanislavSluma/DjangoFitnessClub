@@ -1,0 +1,16 @@
+{% extends "ManyElements.html" %}
+{% block title %} Купоны {% endblock title %}
+{% block header %} Купоны {% endblock header %}
+{% block content %}
+    {% if coupons %}
+    {% for el in coupons %}
+    <p>{{el.name}}</p>
+    <p>Дата окончания: {{el.end_date}}</p>
+    <p>Описание: {{el.description}}</p>
+    <p>Код: {{el.code}}</p>
+    <br/>
+    {% endfor %}
+    {% else %}
+    <p>Налетай, подешевело, было рубль, стало два!!</p>
+    {% endif %}
+{% endblock content %}

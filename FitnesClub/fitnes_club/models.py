@@ -1,10 +1,19 @@
 from django.db import models
+from django.contrib.auth.models import User
+import re
+from django.core.validators import ValidationError
 
 
 class Client(models.Model):
     fullname = models.CharField(max_length=100)
     age = models.PositiveSmallIntegerField()
     phone_number = models.CharField(max_length=30)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def clean(self):
+        super().clean()
+        if not re.match(r'^\+\d{3} \(\d{2}\) \d{3}-\d{2}-\d{2}$', self.phone_number):
+            raise ValidationError("This field accepts mail id of google only")
 
 
 class Group(models.Model):
@@ -31,11 +40,22 @@ class Instructor(models.Model):
     age = models.PositiveSmallIntegerField()
     phone_number = models.CharField(max_length=30)
     workouts = models.ManyToManyField(Workout)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def clean(self):
+        super().clean()
+        if not re.match(r'^\+\d{3} \(\d{2}\) \d{3}-\d{2}-\d{2}$', self.phone_number):
+            raise ValidationError("Номер долже нсоответствовать паттерну +375 (ХХ) ХХХ-ХХ-ХХ")
 
 
-class Schedule(models.Model):
+class GroupSchedule(models.Model):
     description = models.TextField()
     group = models.OneToOneField(Group, on_delete=models.CASCADE, primary_key=True)
+
+
+class InstructorSchedule(models.Model):
+    description = models.TextField()
+    instructor = models.OneToOneField(Instructor, on_delete=models.CASCADE, primary_key=True)
 
 
 class ClubCard(models.Model):

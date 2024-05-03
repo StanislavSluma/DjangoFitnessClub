@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 
 # for page CompanyInfo
@@ -6,14 +7,16 @@ class CompanyInfo(models.Model):
     logo = models.CharField(max_length=20)
     history = models.TextField()
     requisites = models.TextField()
+    date = models.DateField()
 
 
 # for page News
 class Article(models.Model):
-    date = models.DateTimeField
+    date = models.DateTimeField()
     title = models.CharField(max_length=100)
     description = models.TextField()
     text = models.TextField()
+    picture = models.ImageField(upload_to="article_picture", default='')
 
 
 # for page FAQ
@@ -24,12 +27,17 @@ class Faq(models.Model):
 
 
 # for page Contacts
-# class Instructor
+class Employee(models.Model):
+    fullname = models.CharField(max_length=100)
+    description = models.TextField()
+    photo = models.ImageField(upload_to="employee_photo", default='')
+
 
 # for page Vacancies
 class Vacancy(models.Model):
+    name = models.CharField(max_length=30)
     description = models.TextField()
-    salary = models.PositiveIntegerField()
+    salary = models.CharField(max_length=40)
 
 
 # for page Reviews
@@ -44,7 +52,5 @@ class Review(models.Model):
 class Coupon(models.Model):
     name = models.CharField(max_length=30)
     description = models.TextField()
-    code = models.CharField(max_length=10)
+    code = models.CharField(max_length=10, validators=[MinValueValidator(34)])
     end_date = models.DateField()
-
-

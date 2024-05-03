@@ -1,0 +1,15 @@
+{% extends "ManyElements.html" %}
+{% block title %} FAQ {% endblock title %}
+{% block header %} Самые частые вопросы {% endblock header %}
+{% block content %}
+    {% if faqs %}
+    {% for el in faqs%}
+    <p>Дата: {{el.date}}</p>
+    <p>Вопрос: {{el.question}}</p>
+    <p>Ответ: {{el.answer}}</p>
+    <br/>
+    {% endfor %}
+    {% else %}
+    <p>Вопросы? Вопросов нет!</p>
+    {% endif %}
+{% endblock content %}

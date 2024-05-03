@@ -1,0 +1,15 @@
+{% extends "ManyElements.html" %}
+{% block title %} Вакансии {% endblock title %}
+{% block header %} Вакансии {% endblock header %}
+{% block content %}
+    {% if vacancies %}
+    {% for el in vacancies %}
+    <p>Праца: {{el.name}}</p>
+    <p>Описание: {{el.description}}</p>
+    <p>Зарплата: {{el.salary}}</p>
+    <br/>
+    {% endfor %}
+    {% else %}
+    <p>Таких как вы тут уже хватает!</p>
+    {% endif %}
+{% endblock content %}

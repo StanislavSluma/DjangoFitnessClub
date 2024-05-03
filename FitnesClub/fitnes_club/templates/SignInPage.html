@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+</head>
+<body>
+<form method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+    {{field.label_tag}} <i>{{field.help_text}}</i>
+    <p>{{field}}</p>
+    {% if error %}
+    <p><font color="FF0000">{{error}}</font></p>
+    {% endif %}
+    <p><input type="submit" value="Зарегистрироваться" ></p>
+    <a href="{% url 'fitness' %}"><button>Вернуться</button></a>
+</form>
+</body>
+</html>

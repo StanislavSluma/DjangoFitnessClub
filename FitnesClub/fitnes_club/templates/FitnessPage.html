@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Фитнес</title>
+</head>
+<header>
+    <a href="{% url 'home' %}"><button>На главную</button></a>
+    <a href="{% url 'login' %}"><button>Войти</button></a>
+    <a href="{% url 'signin' %}"><button>Регистрация</button></a>
+    <a href="{% url 'user' %}"><button>Моя страница</button></a>
+    {% comment %}
+    <button type="button" onclick="history.go(-1)">Назад</button>
+    {% endcomment %}
+</header>
+<body>
+<div align="center">
+    <h1>Приветствуем вас в нашем Фитнес Клубе!!!</h1>
+    <h2>Нас уже -->> {{client_amount}}!!!</h2>
+    <br/>
+    <p>{{info.logo}}</p>
+    <p>{{info.history}}</p>
+    <p>Реквизиты: {{info.requisites}}
+</div>
+</body>
+</html>

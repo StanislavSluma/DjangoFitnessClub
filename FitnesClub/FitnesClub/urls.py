@@ -15,25 +15,44 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from django.urls import path, re_path, include
+from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 from fitnes_club import views as fitness_view
 from common_tasks import views as common_view
-from django.urls import path, include
-from django.contrib import admin
 
 
 common_patterns = [
-    path('about/', common_view.index),
-    path('instructors/', common_view.instructors, {'name': 'Mama', 'age': 18})
+    path('', common_view.home_page, name='home'),
+    path('info/', common_view.company_info_page, name='info'),
+    path('news/', common_view.news_page, name='news'),
+    path('faq/', common_view.faq_page, name='faq'),
+    path('employees/', common_view.employees_page, name='employees'),
+    path('vacancies/', common_view.vacancies_page, name='vacancies'),
+    path('reviews/', common_view.reviews_page, name='feedback'),
+    path('coupons/', common_view.coupons_page, name='coupons'),
+]
+
+account_patterns = [
+    path('signin/', fitness_view.signin_page, name='signin'),
+    path('login/', fitness_view.login_page, name='login'),
+    path('logout/', fitness_view.logout_page, name='logout')
 ]
 
 
 fitness_patterns = [
-    path('clients/', fitness_view.clients),
-    path('client/<int:id>', fitness_view.client)
+    path('', fitness_view.fitness_page, name='fitness'),
+    path('user/', fitness_view.user_page, name='user'),
+    path('client/', fitness_view.client_page, name='client'),
+    path('instructor/', fitness_view.instructor_page, name='instructor')
 ]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('fitness/', include(fitness_patterns)),
-    path('', include(common_patterns))
-]
+    path('home/', include(common_patterns)),
+    path('account/', include(account_patterns))
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

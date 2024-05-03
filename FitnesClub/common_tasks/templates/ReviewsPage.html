@@ -1,0 +1,16 @@
+{% extends "ManyElements.html" %}
+{% block title %} Отзывы {% endblock title %}
+{% block header %} Отзывы {% endblock header %}
+{% block content %}
+    {% if reviews %}
+    {% for el in reviews %}
+    <p>Дата: {{el.date}}</p>
+    <p>Оценка: {{el.grade}}</p>
+    <p>Отзыв: {{el.text}}</p>
+    <p>Имя: {{el.name}}</p>
+    <br/>
+    {% endfor %}
+    {% else %}
+    <p>Все замечательно!</p>
+    {% endif %}
+{% endblock content %}
