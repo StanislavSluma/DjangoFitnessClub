@@ -6,11 +6,11 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.models import Group as gr, User
+from django.views.generic import DetailView
 
-
-from .models import Client, Instructor
+from .models import Client, Instructor, Workout
 from common_tasks.models import CompanyInfo
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, FilterForm
 
 
 def signin_page(request):
@@ -110,12 +110,28 @@ def fitness_page(request):
     return render(request, 'FitnessPage.html', {'client_amount': client_amount, 'info': info})
 
 
-def clients(request):
-    clis = Client.objects.all()
-    return render(request, 'clients.html', {'clis': clis})
+def all_instructors_page(request):
+    instructors = Instructor.objects.all()
+    return render(request, "InstructorsPage.html", {'instructors': instructors})
 
 
-def client(request, id):
-    cli = Client.objects.filter(id=id)[0]
-    groups = cli.group_set.all()
-    return render(request, 'client.html', {'cli': cli, 'groups': groups})
+class InstructorDetailsView(DetailView):
+    model = Instructor
+    template_name = 'InstructorDetailsPage.html'
+    context_object_name = 'instructor'
+
+
+def workouts_page(request):
+    if request.method == 'POST':
+        form = FilterForm(request.POST)
+        if form.is_valid():
+            category = form.cleaned_data.get('category')
+            max_price = form.cleaned_data.get('max_price')
+            if max_price == None:
+                max_price = 2147483648
+            workouts = Workout.objects.filter(price__lte=max_price, category__in=category)
+            return render(request, "WorkoutsPage.html", {'form': form, 'workouts': workouts})
+    else:
+        form = FilterForm()
+        workouts = Workout.objects.all()
+    return render(request, "WorkoutsPage.html", {'form': form, 'workouts': workouts})

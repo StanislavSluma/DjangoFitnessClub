@@ -31,6 +31,7 @@ class Workout(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     price = models.PositiveIntegerField()
+    category = models.CharField(max_length=100, default='Category1')
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True)
     halls = models.ForeignKey(Hall, on_delete=models.SET_NULL, null=True)
 
@@ -39,6 +40,8 @@ class Instructor(models.Model):
     fullname = models.CharField(max_length=100)
     age = models.PositiveSmallIntegerField()
     phone_number = models.CharField(max_length=30)
+    about = models.TextField(null=True, default=None)
+    photo = models.ImageField(upload_to="instructors_photo", default='')
     workouts = models.ManyToManyField(Workout)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 

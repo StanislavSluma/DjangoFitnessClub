@@ -1,7 +1,7 @@
 import logging
 import re
 
-from django.core.validators import ValidationError, RegexValidator
+from django.core.validators import ValidationError
 from django import forms
 
 
@@ -21,8 +21,23 @@ class RegisterForm(forms.Form):
     password1 = forms.CharField(label="Пароль")
     password2 = forms.CharField(min_length=3, max_length=30, label="Пароль", help_text="повторите пароль")
 
+    def clean_age(self):
+        data = self.cleaned_data['age']
+        data = int(data)
+        if data % 2 == 0:
+            raise forms.ValidationError("problema")
+        return data
+
 
 class LoginForm(forms.Form):
     login = forms.CharField(min_length=5, max_length=30, label="Ваш логин")
     password = forms.CharField(min_length=3, max_length=30, label="Пароль")
 
+
+class FilterForm(forms.Form):
+    category = forms.MultipleChoiceField(
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        choices={"Category1": "Category1", "Category2": "Category2", "Category3": "Category3"},
+    )
+    max_price = forms.IntegerField(min_value=1, required=False)

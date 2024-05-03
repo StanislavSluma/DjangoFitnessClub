@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Инструкторы</title>
+</head>
+<body>
+<a href="{% url 'fitness' %}"><button>Вернуться</button></a>
+<div align="center">
+    {% if instructors %}
+    {% for el in instructors %}
+        <img src="{{el.photo.url}}">
+        <p>ФИО: {{el.fullname}}</p>
+        <p>Возраст: {{el.age}}</p>
+        <p><a href="{% url 'instructor_details' el.id %}"><button>Перейти</button></a></p>
+        <br/>
+    {% endfor %}
+    {% else %}
+        <p>Инструкторов пока нет :-(</p>
+    {% endif %}
+</div>
+</body>
+</html>

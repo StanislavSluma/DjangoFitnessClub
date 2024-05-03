@@ -47,7 +47,10 @@ fitness_patterns = [
     path('', fitness_view.fitness_page, name='fitness'),
     path('user/', fitness_view.user_page, name='user'),
     path('client/', fitness_view.client_page, name='client'),
-    path('instructor/', fitness_view.instructor_page, name='instructor')
+    path('instructor<int:pk>', fitness_view.InstructorDetailsView.as_view(), name='instructor_details'),
+    path('instructor/', fitness_view.instructor_page, name='instructor'),
+    path('instructors/', fitness_view.all_instructors_page, name='all_instructors'),
+    path('workouts/', fitness_view.workouts_page, name='workouts')
 ]
 
 urlpatterns = [

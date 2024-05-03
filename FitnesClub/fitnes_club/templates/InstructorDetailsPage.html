@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>О инструкторе</title>
+</head>
+<body>
+<div align="center">
+    <img src="{{instructor.photo.url}}">
+    <p><b>ФИО: </b> {{instructor.fullname}}</p>
+    <p><b>Возраст: </b>{{instructor.age}}</p>
+    <p><b>Номер телефона: </b>{{instructor.phone_number}}</p>
+    {% if instructor.about %}
+    <p><b>О себе: </b>{{instructor.about}}</p>
+    {% else %}
+    <p>Этот инструктор не оставил ничего о себе</p>
+    {% endif %}
+    <a href="{% url 'all_instructors' %}"><button>Вернуться</button></a>
+</div>
+</body>
+</html>
