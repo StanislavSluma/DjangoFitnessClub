@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Клиенты</title>
+</head>
+<body>
+<a href="{% url 'user' %}"><button>Вернуться</button></a>
+<div align="center">
+    {% if clients %}
+    {% for el in clients %}
+        <p><b>ФИО: </b>{{el.fullname}}</p>
+        <p><b>Возраст: </b>{{el.age}}</p>
+        <p><b>Телефон: </b>{{el.phone_number}}</p>
+        <br/>
+    {% endfor %}
+    {% else %}
+        <p>Клиентов пока нет :-(</p>
+    {% endif %}
+</div>
+</body>
+</html>

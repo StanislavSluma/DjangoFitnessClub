@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Группа</title>
+</head>
+<body>
+<div align="center">
+    <h2>Группа: {{group.name}}</h2>
+    <p><b>Цена вхождения: </b>{{group.all_price}}</p>
+    <p><b>Предоставляемые занятия</b></p><br/>
+    {% if workouts %}
+    {% for workout in workouts %}
+    <h3>Занятие</h3>
+    <p><b>Категория: </b>{{workout.category}}</p>
+    <p><b>Зал: </b>{{workout.hall.name}}</p>
+    <p><b>Цена: </b>{{workout.price}}</p>
+    <p><b>Начало: </b>{{workout.start_time}}</p>
+    <p><b>Конец: </b>{{workout.end_time}}</p>
+    <br/>
+    {% endfor %}
+    {% else %}
+    <p>Здесь нет занятий</p>
+    {% endif %}
+    {% block for_buy %}{% endblock for_buy %}
+</div>
+<a href="{% url 'user' %}"><button>Вернуться</button></a>
+</body>
+</html>

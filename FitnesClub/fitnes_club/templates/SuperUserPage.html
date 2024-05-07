@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Статистика клуба</h1>
+
+    <h2>Клиенты</h2>
+    <ul>
+        {% for client in clients %}
+            <li>{{ client.fullname }} - Возраст: {{ client.age }} - Затраты: {{ client.expenses }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Общая выручка</h2>
+    <p>{{ total_expenses }}</p>
+
+    <h2>Средние затраты по клиентам</h2>
+    <p>{{ avg_expenses }}</p>
+
+    <h2>Средний возраст клиентов</h2>
+    <p>{{ avg_age }}</p>
+
+    <h2>Занятия по группам за последние 30 дней</h2>
+    <ul>
+        {% for group in group_workouts %}
+            <li>{{ group.name }} - Итого: {{ group.total_workouts }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Общий счет за услуги для каждого клиента</h2>
+    <ul>
+        {% for client in client_services %}
+            <li>{{ client.fullname }} - Итого: {{ client.total_services }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Наиболее популярная категория</h2>
+    <ul>
+        {% for category in workout_categories %}
+            <li>{{ category.category }} - Количество: {{ category.count }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Наиболее ценная категория</h2>
+    <ul>
+        {% for category in profitable_workouts %}
+            <li>{{ category.category }} - В сумме принесла: {{ category.total_revenue }}</li>
+        {% endfor %}
+    </ul>
+
+    <h1>Распределение клиентов по возрастам</h1>
+    <img src="{% url 'age_chart' %}"  width="800" height="600" alt="Age Distribution Chart">
+
+    <h1>Распределение занятий по групам</h1>
+    <img src="{% url 'workout_chart' %}" width="800" height="600" alt="Groups">
+
+</body>
+</html>

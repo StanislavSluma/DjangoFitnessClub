@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 # for page CompanyInfo
@@ -52,5 +52,6 @@ class Review(models.Model):
 class Coupon(models.Model):
     name = models.CharField(max_length=30)
     description = models.TextField()
-    code = models.CharField(max_length=10, validators=[MinValueValidator(34)])
+    code = models.CharField(max_length=10)
+    discount = models.PositiveSmallIntegerField(default=5, validators=[MaxValueValidator(100)])
     end_date = models.DateField()

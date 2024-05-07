@@ -6,8 +6,35 @@
 </head>
 <body>
 <a href="{% url 'logout' %}"><button>Выйти</button></a>
+<a href="{% url 'client_change' %}"><button>Изменить профиль</button></a>
 <a href="{% url 'fitness' %}"><button>ФитнесКлуб</button></a>
-<p>Ваше имя: {{client.fullname}}</p>
-<p>Ваш возраст: {{client.age}}</p>
+<div align="center">
+    <p><b>ФИО: </b> {{client.fullname}}</p>
+    <p><b>Возраст: </b>{{client.age}}</p>
+    <p><b>Номер телефона: </b>{{client.phone_number}}</p>
+    <p><b>Затраты: </b>{{client.expenses}}</p><br>
+    {% if client.clubcard %}
+    <h2>Ваша клубная карта</h2>
+    <p><b>Название: </b> {{client.clubcard.name}}</p>
+    <p><b>Скидка: </b>{{client.clubcard.discount}}%</p>
+    <p><b>Дата истечения: </b>{{client.clubcard.end_date}}</p>
+    <br/>
+    {% endif %}
+</div>
+<div align="center">
+    <h2>Ваша группы:</h2>
+    {% if groups %}
+    {% for group in groups %}
+    <p><b>Название </b> {{group.name}}</p>
+    <p><b>Цена вхождения: </b>{{group.all_price}}</p>
+    <a href="{% url 'group_details' group.id %}"><button>Просмотр</button></a>
+    {% endfor %}
+    {% else %}
+    <p>У вас пока нет групп(</p>
+    {% endif %}
+</div>
+<a href="{% url 'groups' %}"><button>Группы</button></a>
+<p>Вы можете приобрести клубную карту со скидкой до 20%(чистая удача), всего за 20 рублей<p>
+<a href="{% url 'client_buy_card' %}"><button>Приобрести</button></a>
 </body>
 </html>

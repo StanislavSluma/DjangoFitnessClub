@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Группы</title>
+</head>
+<body>
+<div align="center">
+    {% if groups %}
+    {% for group in groups %}
+    <p><b>Название </b> {{group.name}}</p>
+    <p><b>Цена вхождения: </b>{{group.all_price}}</p>
+    <a href="{% url 'group_buy' group.id %}"><button>Просмотр</button></a>
+    {% endfor %}
+    {% else %}
+    <p>Нет интересных для вас групп(</p>
+    {% endif %}
+</div>
+<a href="{% url 'user' %}"><button>Вернуться</button></a>
+</body>
+</html>

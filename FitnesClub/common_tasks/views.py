@@ -1,9 +1,24 @@
+import datetime
+import calendar
 import requests
+
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
+from django.utils import timezone
+
 from .models import Article, CompanyInfo, Coupon, Faq, Vacancy, Employee, Review
+from fitnes_club.models import Client
+from .forms import ReviewForm
 
 
 def home_page(request):
+
+    current_datetime = datetime.datetime.now()
+    user_timezone = datetime.datetime.now(timezone.timezone.utc).astimezone().tzinfo
+    text_calendar = calendar.TextCalendar(firstweekday=2).formatmonth(current_datetime.year, current_datetime.month).split('\n')
+
     try:
         latest_article = Article.objects.order_by('-date')[0]
     except IndexError:
@@ -19,7 +34,16 @@ def home_page(request):
         dog_api = response.json()
     else:
         dog_api = None
-    return render(request, 'HomePage.html', {'article': latest_article, 'cat': cat_api, 'dog': dog_api})
+
+    context = {
+        'article': latest_article,
+        'cat': cat_api,
+        'dog': dog_api,
+        'cur_time': current_datetime,
+        'calendar': text_calendar,
+        'tz': user_timezone
+    }
+    return render(request, 'HomePage.html', context)
 
 
 def company_info_page(request):
@@ -59,3 +83,24 @@ def coupons_page(request):
 
 def instructors(request, name, age):
     return render(request, "InstructorsPage.html", {'name': name, 'age': age})
+
+
+def user_is_client(user):
+    return user.groups.filter(name='Client').count()
+
+
+@login_required(login_url='/account/login/')
+@user_passes_test(user_is_client, login_url='/account/login/')
+def create_review_page(request):
+    form = ReviewForm(request.POST or None)
+    if form.is_valid():
+        name = Client.objects.get(user=request.user).fullname
+        date = datetime.datetime.now()
+        text = request.POST['text']
+        grade = request.POST['grade']
+        Review.objects.create(name=name, date=date, text=text, grade=grade)
+        return HttpResponseRedirect(reverse('feedback'))
+    else:
+        return render(request, 'CreateReviewPage.html', {'form': form})
+
+

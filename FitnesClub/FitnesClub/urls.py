@@ -21,41 +21,62 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-from fitnes_club import views as fitness_view
 from common_tasks import views as common_view
-
+from fitnes_club import views as fitness_view
 
 common_patterns = [
     path('', common_view.home_page, name='home'),
-    path('info/', common_view.company_info_page, name='info'),
-    path('news/', common_view.news_page, name='news'),
-    path('faq/', common_view.faq_page, name='faq'),
-    path('employees/', common_view.employees_page, name='employees'),
-    path('vacancies/', common_view.vacancies_page, name='vacancies'),
-    path('reviews/', common_view.reviews_page, name='feedback'),
-    path('coupons/', common_view.coupons_page, name='coupons'),
+    re_path(r'^info/$', common_view.company_info_page, name='info'),
+    re_path(r'^news/$', common_view.news_page, name='news'),
+    re_path(r'^faq/$', common_view.faq_page, name='faq'),
+    re_path(r'^employees/$', common_view.employees_page, name='employees'),
+    re_path(r'^vacancies/$', common_view.vacancies_page, name='vacancies'),
+    re_path(r'^reviews/$', common_view.reviews_page, name='feedback'),
+    re_path(r'^coupons/$', common_view.coupons_page, name='coupons'),
+    re_path(r'^review/create/$', common_view.create_review_page, name='create_review')
 ]
 
 account_patterns = [
-    path('signin/', fitness_view.signin_page, name='signin'),
-    path('login/', fitness_view.login_page, name='login'),
-    path('logout/', fitness_view.logout_page, name='logout')
+    re_path(r'^signin/$', fitness_view.signin_page, name='signin'),
+    re_path(r'^login/$', fitness_view.login_page, name='login'),
+    re_path(r'^logout/$', fitness_view.logout_page, name='logout'),
 ]
 
+instructor_patterns = [
+    path('', fitness_view.instructor_page, name='instructor'),
+    re_path(r'^change/$', fitness_view.instructor_change_page, name='instructor_change'),
+    path('workout_clients<int:pk>/', fitness_view.workout_clients_page, name='workout_clients'),
+]
+
+client_patterns = [
+    path('', fitness_view.client_page, name='client'),
+    re_path(r'^change/$', fitness_view.client_change_page, name='client_change'),
+    path('group<int:pk>/', fitness_view.client_group_page, name='group_details'),
+    re_path(r'^groups/$', fitness_view.groups_page, name='groups'),
+    path('groups/buy<int:pk>', fitness_view.group_buy_page, name='group_buy'),
+    re_path(r'^club_card/$', fitness_view.client_club_card_page, name='client_buy_card')
+]
+
+super_user_patterns = [
+    path('', fitness_view.super_user_page, name='super_user'),
+    re_path(r'^age_chart/$', fitness_view.age_chart, name='age_chart'),
+    re_path(r'^workout_chart/$', fitness_view.workout_chart, name='workout_chart')
+]
 
 fitness_patterns = [
     path('', fitness_view.fitness_page, name='fitness'),
-    path('user/', fitness_view.user_page, name='user'),
-    path('client/', fitness_view.client_page, name='client'),
-    path('instructor<int:pk>', fitness_view.InstructorDetailsView.as_view(), name='instructor_details'),
-    path('instructor/', fitness_view.instructor_page, name='instructor'),
-    path('instructors/', fitness_view.all_instructors_page, name='all_instructors'),
-    path('workouts/', fitness_view.workouts_page, name='workouts')
+    re_path(r'^user/$', fitness_view.user_page, name='user'),
+    path('instructor<int:pk>/', fitness_view.InstructorDetailsView.as_view(), name='instructor_details'),
+    re_path(r'^instructors/$', fitness_view.all_instructors_page, name='all_instructors'),
+    re_path(r'^workouts/$', fitness_view.workouts_page, name='workouts'),
+    re_path(r'^super_user/', include(super_user_patterns)),
+    re_path(r'^client/', include(client_patterns)),
+    re_path(r'^instructor/', include(instructor_patterns)),
 ]
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('fitness/', include(fitness_patterns)),
-    path('home/', include(common_patterns)),
-    path('account/', include(account_patterns))
+    re_path(r'^admin/', admin.site.urls),
+    re_path(r'^fitness/', include(fitness_patterns)),
+    re_path(r'^home/', include(common_patterns)),
+    re_path(r'^account/', include(account_patterns))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

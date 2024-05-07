@@ -16,6 +16,25 @@
 </header>
 <body>
 <div align="center">
+    <header>
+        <p>
+             Текущая дата: {{ cur_time|date:"d/m/Y" }}
+        </p>
+        <p>
+             Ваша таймзона: {{ tz }}
+        </p>
+        <table style="display: inline-block;">
+            {% if calendar %}
+                {% for row in calendar %}
+                    <tr>
+                        {% for cell in row.split %}
+                                <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </header>
     <h1>Глaвная</h1>
     <p>Последняя опубликованная статья</p>
     {% if article %}

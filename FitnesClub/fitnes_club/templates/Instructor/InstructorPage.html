@@ -6,8 +6,36 @@
 </head>
 <body>
 <a href="{% url 'logout' %}"><button>Выйти</button></a>
+<a href="{% url 'instructor_change' %}"><button>Изменить профиль</button></a>
 <a href="{% url 'fitness' %}"><button>ФитнесКлуб</button></a>
-<p>Ваше имя: {{instructor.fullname}}</p>
-<p>Ваш возраст: {{instructor.age}}</p>
+<div align="center">
+    <img src="{{instructor.photo.url}}">
+    <p><b>ФИО: </b> {{instructor.fullname}}</p>
+    <p><b>Возраст: </b>{{instructor.age}}</p>
+    <p><b>Номер телефона: </b>{{instructor.phone_number}}</p>
+    {% if instructor.about %}
+    <p><b>О себе: </b>{{instructor.about}}</p>
+    {% else %}
+    <p>Вы ничего о себе не оставили(</p>
+    {% endif %}
+</div>
+<br/><br/>
+<div align="center">
+    <h2>Ваше расписание</h2>
+    {% if schedule %}
+    {% for workout in schedule %}
+    <h3>Занятие:</h3>
+    <p><b>Категория: </b>{{workout.category}}</p>
+    <p><b>Группа: </b>{{workout.group.name}}</p>
+    <p><b>Зал: </b>{{workout.hall.name}}</p>
+    <p><b>Начало: </b>{{workout.start_time}}</p>
+    <p><b>Конец: </b>{{workout.end_time}}</p>
+    <p><a href="{% url 'workout_clients' workout.id %}"><button>Клиенты</button></a></p>
+    <br/>
+    {% endfor %}
+    {% else %}
+    <p>У вас пока нет занятий(</p>
+    {% endif %}
+</div>
 </body>
 </html>
