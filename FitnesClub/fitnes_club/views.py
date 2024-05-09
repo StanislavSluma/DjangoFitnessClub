@@ -1,12 +1,15 @@
+import calendar
 import datetime
 import os
 import random
 import re
 import io
 import matplotlib
+from django.db.models.fields import related
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-
+import logging
 
 from FitnesClub.settings import BASE_DIR
 from django.contrib.auth import authenticate, login, logout
@@ -25,7 +28,12 @@ from common_tasks.models import CompanyInfo, Coupon
 from .forms import RegisterForm, LoginForm, FilterForm, InstructorForm, ClientForm
 
 
+logger = logging.getLogger(__name__)
+logger2 = logging.getLogger('fitnes_club_war')
+
+
 def signin_page(request):
+    logger.info("INFO: User in signin page ")
     if request.method == 'POST':
         fullname = request.POST['user_name']
         age = request.POST['age']
@@ -36,10 +44,12 @@ def signin_page(request):
         if not password1 == password2:
             form = RegisterForm(request.POST)
             error = "Пароли должны совпадать"
+            logger2.warning("WAR: User password mismatch ")
             return render(request, 'SignInPage.html', {'form': form, 'error': error})
         if not re.fullmatch(r'^\+\d{3} \(\d{2}\) \d{3}-\d{2}-\d{2}$', phone_number):
             form = RegisterForm(request.POST)
             error = "Номер телефона должен соответствовать шаблону: +375 (ХХ) ХХХ-ХХ-ХХ"
+            logger2.warning("WAR: User phone_number does not match with pattern ")
             return render(request, 'SignInPage.html', {'form': form, 'error': error})
         user = User.objects.create_user(username=username, password=password1)
         user.groups.add(gr.objects.get(name='Client'))
@@ -47,6 +57,7 @@ def signin_page(request):
         client = Client.objects.create(fullname=fullname, age=age, phone_number=phone_number, user=user)
         client.save()
         login(request, user)
+        logger.info("INFO: User signin successful ")
         # return HttpResponseRedirect('/fitness/client/')
         return HttpResponseRedirect(reverse('client'))
     else:
@@ -55,6 +66,7 @@ def signin_page(request):
 
 
 def login_page(request):
+    logger.info("INFO: User in login page ")
     if request.method == 'POST':
         username = request.POST['login']
         password = request.POST['password']
@@ -62,19 +74,27 @@ def login_page(request):
         if user is not None:
             if user.groups.filter(name='Client').count():
                 login(request, user)
+                logger.info("INFO: User is Client")
                 # return HttpResponseRedirect('/fitness/client/')
                 return HttpResponseRedirect(reverse('client'))
             elif user.groups.filter(name='Instructor').count():
                 login(request, user)
+                logger.info("INFO: User is Instructor")
                 # return HttpResponseRedirect('/fitness/instructor/')
                 return HttpResponseRedirect(reverse('instructor'))
+            elif user.is_superuser:
+                login(request, user)
+                logger.info("INFO: User is superuser ")
+                return HttpResponseRedirect(reverse('super_user'))
             else:
                 form = LoginForm(request.POST)
                 error = 'Пользователь не найден('
+                logger2.warning("WAR: User not found")
                 return render(request, 'LogInPage.html', {'form': form, 'error': error})
         else:
             form = LoginForm(request.POST)
             error = 'Пользователь не найден('
+            logger2.warning("WAR: User not authorized")
             return render(request, 'LogInPage.html', {'form': form, 'error': error})
     else:
         form = LoginForm()
@@ -98,7 +118,7 @@ def user_page(request):
     elif user.groups.filter(name='Instructor'):
         # return HttpResponseRedirect('/fitness/instructor/'))
         return HttpResponseRedirect(reverse('instructor'))
-    elif user.groups.filter(name='SuperUser'):
+    elif user.is_superuser:
         # return HttpResponseRedirect('/fitness/super_user/'))
         return HttpResponseRedirect(reverse('super_user'))
     else:
@@ -131,8 +151,11 @@ def client_club_card_page(request):
         name = 'Очень удачливая клубная карта'
     else:
         name = 'Невероятно удачливая клубная карта'
-    client.clubcard.delete()
-    client.clubcard = ClubCard.objects.create(name=name, discount=discount, end_date=end_date, client=client)
+    try:
+        client.clubcard = ClubCard.objects.update(name=name, discount=discount, end_date=end_date, client=client)
+    except:
+        client.clubcard.delete()
+        client.clubcard = ClubCard.objects.create(name=name, discount=discount, end_date=end_date, client=client)
     client.save()
     return HttpResponseRedirect(reverse('user'))
 
@@ -161,11 +184,11 @@ def group_buy_page(request, id):
         client = Client.objects.get(user=request.user)
         client.group_set.add(group)
         coupon = Coupon.objects.filter(code=request.POST['coupon'])
-        if coupon.count() and coupon[0].end_date > datetime.datetime.now():
+        if coupon.count() and coupon[0].end_date > datetime.date.today():
             coupon = coupon[0].discount
         else:
             coupon = 0
-        if client.clubcard.end_date >= datetime.datetime.today():
+        if client.clubcard.end_date > datetime.date.today():
             coupon += client.clubcard.discount
         client.expenses += group.all_price * (100 - coupon) / 100
         if group.max_clients <= group.clients.count():
@@ -205,8 +228,20 @@ def logout_page(request):
 
 
 def fitness_page(request):
+    logger.info("mama")
+    logger2.warning("papa")
+    print(request.session.get('timezone_offset'))
+    # print(datetime.datetime.now())
+    # print(datetime.datetime.utcnow())
+    c = calendar.TextCalendar()
+    d = datetime.date.today()
+    s = c.formatmonth(d.year, d.month)
+    print(s)
+    print(c)
     client_amount = Client.objects.all().count()
-    info = CompanyInfo.objects.order_by('-date')[0]
+    info = CompanyInfo.objects.order_by('-date')
+    if info:
+        info = info[0]
     return render(request, 'FitnessPage.html', {'client_amount': client_amount, 'info': info})
 
 
@@ -318,7 +353,7 @@ def client_change_page(request):
 
 
 @login_required(login_url='admin/')
-@user_passes_test(lambda user: user.groups.filter(name='SuperUser').count(), login_url='admin/')
+@user_passes_test(lambda user: user.is_superuser, login_url='admin/')
 def super_user_page(request):
 
     #statistics

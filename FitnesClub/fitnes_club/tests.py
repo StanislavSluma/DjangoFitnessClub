@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from .models import Client, Group, Hall, Workout, Instructor, GroupSchedule, InstructorSchedule, ClubCard
+from .models import Client, Group, Hall, Workout, Instructor, GroupSchedule, ClubCard
 from .forms import RegisterForm
 from common_tasks.models import CompanyInfo
 from .forms import ClientForm, InstructorForm

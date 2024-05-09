@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from .models import Article, CompanyInfo, Coupon, Faq, Vacancy, Employee, Review
+from .models import *
 import requests
 
 

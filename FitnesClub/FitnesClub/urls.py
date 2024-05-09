@@ -45,15 +45,15 @@ account_patterns = [
 instructor_patterns = [
     path('', fitness_view.instructor_page, name='instructor'),
     re_path(r'^change/$', fitness_view.instructor_change_page, name='instructor_change'),
-    path('workout_clients<int:pk>/', fitness_view.workout_clients_page, name='workout_clients'),
+    path('workout_clients<int:id>/', fitness_view.workout_clients_page, name='workout_clients'),
 ]
 
 client_patterns = [
     path('', fitness_view.client_page, name='client'),
     re_path(r'^change/$', fitness_view.client_change_page, name='client_change'),
-    path('group<int:pk>/', fitness_view.client_group_page, name='group_details'),
+    path('group<int:id>/', fitness_view.client_group_page, name='group_details'),
     re_path(r'^groups/$', fitness_view.groups_page, name='groups'),
-    path('groups/buy<int:pk>', fitness_view.group_buy_page, name='group_buy'),
+    path('groups/buy<int:id>', fitness_view.group_buy_page, name='group_buy'),
     re_path(r'^club_card/$', fitness_view.client_club_card_page, name='client_buy_card')
 ]
 

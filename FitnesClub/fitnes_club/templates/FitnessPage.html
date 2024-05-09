@@ -18,9 +18,11 @@
     <h1>Приветствуем вас в нашем Фитнес Клубе!!!</h1>
     <h2>Нас уже -->> {{client_amount}}!!!</h2>
     <br/>
+    {% if info %}
     <p>{{info.logo}}</p>
     <p>{{info.history}}</p>
     <p>Реквизиты: {{info.requisites}}
+    {% endif %}
 </div>
 <a href="{% url 'all_instructors' %}"><button>Инструкторы</button></a>
 <a href="{% url 'workouts' %}"><button>Занятия</button></a>

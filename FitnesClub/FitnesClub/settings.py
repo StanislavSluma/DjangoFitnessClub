@@ -117,16 +117,21 @@ LOGGING = {
         },
     },
     'loggers': {
-        'fitness_club_info': {
-            'handlers': 'console',
-            'level': 'DEBUG',
+        'fitnes_club': {
+            'handlers': ['console'],
+            'level': 'INFO',
             'propagate': True,
         },
-        'fitness_club_war': {
-            'handlers': 'file',
+        'fitnes_club_war': {
+            'handlers': ['file'],
             'level': 'WARNING',
             'propagate': True,
         },
+        #'django': {
+        #    'handlers': ['file'],
+        #    'level': 'WARNING',
+        #    'propagate': True,
+        #},
     },
 }
 

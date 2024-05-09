@@ -1,5 +1,7 @@
 import datetime
 import calendar
+from functools import reduce
+
 import requests
 
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -8,16 +10,21 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import Article, CompanyInfo, Coupon, Faq, Vacancy, Employee, Review
-from fitnes_club.models import Client
+from .models import Article, CompanyInfo, Coupon, Faq, Vacancy, Review
+from fitnes_club.models import Client, Instructor
 from .forms import ReviewForm
 
 
 def home_page(request):
-
     current_datetime = datetime.datetime.now()
-    user_timezone = datetime.datetime.now(timezone.timezone.utc).astimezone().tzinfo
-    text_calendar = calendar.TextCalendar(firstweekday=2).formatmonth(current_datetime.year, current_datetime.month).split('\n')
+    #user_timezone = datetime.datetime.now(timezone.timezone.utc).astimezone().tzinfo
+    user_timezone = timezone.localtime(timezone.now())
+    text_calendar = calendar.TextCalendar().formatmonth(current_datetime.year, current_datetime.month).split('\n')
+    width = len(text_calendar[1])
+    text_calendar[0] += ' '*(width-len(text_calendar[0]))
+    text_calendar[-2] += ' '*(width-len(text_calendar[-2]))
+    text_calendar = '\n' + reduce(lambda x, y: x + '\n' + y, text_calendar)
+    # print(text_calendar.replace(' ', '*'))
 
     try:
         latest_article = Article.objects.order_by('-date')[0]
@@ -57,7 +64,7 @@ def news_page(request):
 
 
 def employees_page(request):
-    employees = Employee.objects.all()
+    employees = Instructor.objects.all()
     return render(request, "EmployeesPage.html", {'employees': employees})
 
 

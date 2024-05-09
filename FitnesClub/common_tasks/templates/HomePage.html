@@ -23,17 +23,22 @@
         <p>
              Ваша таймзона: {{ tz }}
         </p>
+        <pre style="font-size: 16px;">
+            {{calendar}}
+        </pre>
+        {% comment %}
         <table style="display: inline-block;">
             {% if calendar %}
                 {% for row in calendar %}
                     <tr>
-                        {% for cell in row.split %}
-                                <td>{{ cell }}</td>
-                        {% endfor %}
+                        <td>
+                        {{row}}
+                        </td>
                     </tr>
                 {% endfor %}
             {% endif %}
         </table>
+        {% endcomment %}
     </header>
     <h1>Глaвная</h1>
     <p>Последняя опубликованная статья</p>
