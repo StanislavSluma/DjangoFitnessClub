@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  {% load static %}
+</head>
+<body>
+<p>-------------------------------------------------------</p>
+<form action="http://example.com/app/profile.php" method="post">
+  Имя:
+  <input type="text" name="username"><br>
+  Адрес эл. почты:
+  <input type="text" name="email"><br>
+  Пол:<br>
+  <input type="radio" name="sex" value="male">мужской<br>
+  <input type="radio" name="sex" value="female">женский<br>
+
+  <input type="submit" value="Отправить">
+  <input type="reset" value="Очистить">
+</form>
+<p>-------------------------------------------------------</p>
+<form action="http://example.com/app/profile.php" method="post"
+      name="main" novalidate autocomplete="on" target="_blank">
+  Имя:
+  <input type="text" name="username"><br>
+  Адрес эл. почты:
+  <input type="text" name="email"><br>
+  Пол:<br>
+  <input type="radio" name="sex" value="male">мужской<br>
+  <input type="radio" name="sex" value="female">женский<br>
+
+  <input type="submit" value="Отправить">
+  <input type="reset" value="Очистить">
+</form>
+<p>-------------------------------------------------------</p>
+<form action="http://server.com" method="post">
+    Login:
+    <input type="text" name="login"
+           size="10" autocomplete="on">
+    <br>
+    Password:
+    <input type="password" name="pass"
+           maxlength="8">
+    <br><br>
+    <input type="submit" value="Log in">
+</form>
+<p>-------------------------------------------------------</p>
+<form action="http://server.com" method="post">
+  <input type="checkbox" name="vehicle"
+         value="Bike"> I have a bike<br>
+  <input type="checkbox" name="vehicle"
+         value="Car"> I have a car<br><br>
+  <input type="radio" name="gender" value="male">
+         Male<br>
+  <input type="radio" name="gender" value="female">
+         Female
+</form>
+<!--vehicle=Bike&vehicle=Car&gender=male-->
+<p>-------------------------------------------------------</p>
+<form action="http://server.com" method="post">
+  <input type="checkbox" name="cbl" value="Bike"
+         checked>Bike<br>
+  <input type="checkbox" name="cbl" value="Car">Car<br>
+  <input type="text" name="tbx" value="Default"><br>
+  <br>
+  <input type="button" name="btn1" value="Button"><br>
+  <input type="submit" name="btn2" value="Send!"><br>
+  <input type="reset" name="btn3"><br>
+</form>
+<p>-------------------------------------------------------</p>
+<form action="http://server.com" method="post">
+    Click on the image to send:<br>
+    <input type="image" name="img" src="{% static 'Icon.png' %}" width="200">
+</form>
+<!-- img.x=112&img.y=58  -->
+<p>-------------------------------------------------------</p>
+<form action="http://server.com" method="post"
+      enctype="multipart/form-data"
+      accept="image/jpeg,image/png,image/gif" >
+
+        Select file:<br><br>
+        <input type="file" name="fileinput">
+        <br><br>
+        <input type="submit" value="Send!">
+</form>
+<p>-------------------------------------------------------</p>
+Color:<input type="color" name="color"><br>
+Date:<input type="date" name="date"><br>
+Date and time:<input type="datetime" name="dt"><br>
+Date and time (local):<input type="datetime-local" name="dtl"><br>
+Email:<input type="email" name="email"><br>
+Number:<input type="number" name="number"><br>
+Range:<input type="range" name="range" min="10" max="20"><br>
+Search:<input type="search" name="search"><br>
+Tel:<input type="tel" name="tel"><br>
+Time:<input type="time" name="time"><br>
+URL:<input type="url" name="url"><br>
+Month:<input type="month" name="month"><br>
+Week:<input type="week" name="week"><br>
+<p>-------------------------------------------------------</p>
+<form action="http://server.com" method="post">
+   <textarea name="desc" cols="45" rows="10"
+             placeholder="Input description"
+             required maxlength="450"></textarea>
+   <br><br>
+   <input type="submit" value="Send!">
+ </form>
+<p>-------------------------------------------------------</p>
+<form action="http://server.com" method="post">
+ <select size="4" name="s1">
+   <option disabled>Choose a hero:</option>
+   <option value="iron">Iron Man</option>
+   <option selected value="captain">Captain America</option>
+   <option value="thor">Thor</option>
+ </select>
+ <br>
+ <select size="1" name="s2">
+   <option disabled>Choose a hero:</option>
+   <option value="iron">Iron Man</option>
+   <option selected value="captain">Captain America</option>
+   <option value="thor">Thor</option>
+ </select>
+ <br>
+ <input type="submit" value="Send!">
+</form>
+<p>-------------------------------------------------------</p>
+<select size="3" name="list">
+  <option disabled>Disabled item</option>
+  <option selected value="sel">
+     Selected item
+  </option>
+  <option label="Label" value="lab">
+     Labeled item
+  </option>
+</select>
+<p>-------------------------------------------------------</p>
+<select size="1" name="list">
+  <option value="v1">Not in group</option>
+  <optgroup label="Group 1">
+    <option value="v2">Item G1-1</option>
+    <option value="v3">Item G1-2</option>
+  </optgroup>
+  <optgroup label="Group 2">
+    <option value="v4">Item G2-1</option>
+    <option value="v5">Item G2-2</option>
+  </optgroup>
+</select>
+<p>-------------------------------------------------------</p>
+<form action="http://server.com" method="post">
+  <p>
+   Fruit: <input list="fruitlist" id="fave" name="fave" />
+  </p>
+  <button type="submit">Submit Vote</button>
+</form>
+
+<datalist id="fruitlist">
+  <option value="Apples" label="Lovely Apples" />
+  <option value="Oranges">Refreshing Oranges</option>
+  <option value="Cherries" />
+</datalist>
+<p>-------------------------------------------------------</p>
+<form action="http://server.com" method="post">
+    <button type="button" name="btn">
+        <p>Paragraph 1</p>
+        <p>Paragraph 2</p>
+    </button>
+</form>
+<p>-------------------------------------------------------</p>
+<form action="http://server.com" method="post">
+    <fieldset title="Login info">
+      <legend>User info</legend>
+      User: <input type="text" name="usr"><br>
+      Pass: <input type="password" name="pass">
+      <br>
+      <input type="submit" value="Login">
+    </fieldset>
+</form>
+<p>-------------------------------------------------------</p>
+<form action="http://server.com" method="post">
+  <fieldset title="Login info">
+    <legend>User info</legend>
+    <label for="usr">User:</label>
+    <input id="usr" type="text" name="usr"><br>
+    <label>Pass:
+      <input type="password" name="pass">
+    </label><br>
+    <input type="submit" value="Login">
+  </fieldset>
+</form>
+<p>-------------------------------------------------------</p>
+<!-- локальное изображение -->
+<img src="HTML5_Logo.png" alt="HTML5">
+<p>-------------------------------------------------------</p>
+<a href="http://issoft.by">
+        <img src="HTML5_Logo.png" alt="HTML5"
+             height="180" width="100"
+             longdesc="https://www.wikiwand.com/ru/HTML5"
+             ismap align="right" hspace="50">
+    </a>
+This is official HTML5 logo.
+    Lorem ipsum — dolor sit amet,
+    consectetuer adipiscing elit,
+<!-- ПАЧИМУ НЕ РАБОТАЕТ-->
+<p>-------------------------------------------------------</p>
+<img src="{% static 'Icon.png' %}"
+  srcset="{% static 'Icon.png' %} 1x,
+          {% static 'pict.png' %} 2x"
+>
+<p>-------------------------------------------------------</p>
+<img src="{% static 'Icon.png' %}"
+  srcset="{% static 'Icon.png' %} 600w,
+          {% static 'pict.png' %} 1400w"
+>
+<p>-------------------------------------------------------</p>
+<img src="{% static 'Icon.png' %}"
+  srcset="{% static 'Icon.png' %} 600w,
+          {% static 'pict.png' %} 1400w"
+>
+<p>-------------------------------------------------------</p>
+<ul>
+    <li>
+      <a href="https://www.wikiwand.com/ru/HTML" target="fr">HTML</a>
+    </li>
+    <li>
+      <a href="https://www.wikiwand.com/ru/HTML5" target="fr">HTML5</a>
+    </li>
+  </ul>
+  <iframe name="fr" width="400" height="150">Old browser</iframe>
+
+<p>-------------------------------------------------------</p>
+<embed
+    src="http://www.youtube.com/v/qzA60hHca9s?version=3"
+    type="application/x-shockwave-flash"
+    width="560" height="349"
+    allowfullscreen="true">
+    <!-- все "нестандартные" атрибуты - это параметры
+     для плагина -->
+
+<p>-------------------------------------------------------</p>
+<object width="560" height="349"
+   data="https://youtu.be/7r--AZiRmv8?si=TBJJruoP3SVpUttj"
+   type="application/x-shockwave-flash">
+   <param name="allowFullScreen" value="true">
+     <b>Sorry!</b> We can't display this content
+ </object>
+<p>-------------------------------------------------------</p>
+<video width="360" height="240"
+       src="http://www.youtube.com/v/qzA60hHca9s?version=3  "
+       autoplay controls preload="none" muted>
+  Video cannot be displayed
+</video>
+<p>-------------------------------------------------------</p>
+<video controls width="360" height="240">
+  <source src="timessquare.webm" type="video/webm" />
+  <source src="timessquare.ogv" type="video/ogg" />
+  <source src="timessquare.mp4" type="video/mp4" />
+  Video cannot be displayed
+</video>
+<p>-------------------------------------------------------</p>
+<video width="500" height="400" controls>
+  <track kind="subtitles" src="video/jane.en.vtt"
+         srclang="en" label="English">
+  <track kind="subtitles" src="video/jane.ua.vtt"
+         srclang="ua" label="Український">
+  <track kind="subtitles" src="video/jane.ru.vtt"
+         srclang="ru" label="Русский" default>
+  <source src="video/jane.ogv" type="video/ogg">
+  <source src="video/jane.mp4" type="video/mp4">
+  <source src="video/jane.webm" type="video/webm">
+  Элемент video не поддерживается вашим браузером.
+</video>
+<p>-------------------------------------------------------</p>
+<audio controls autoplay>
+    <source src="mytrack.ogg" />
+    <source src="mytrack.mp3" />
+    <source src="mytrack.wav" />
+    Audio content cannot be played
+</audio>
+<p>-------------------------------------------------------</p>
+
+<p>-------------------------------------------------------</p>
+
+<p>-------------------------------------------------------</p>
+
+<p>-------------------------------------------------------</p>
+
+<p>-------------------------------------------------------</p>
+
+<p>-------------------------------------------------------</p>
+
+<p>-------------------------------------------------------</p>
+
+<p>-------------------------------------------------------</p>
+
+<p>-------------------------------------------------------</p>
+
+<p>-------------------------------------------------------</p>
+
+<p>-------------------------------------------------------</p>
+
+<p>-------------------------------------------------------</p>
+
+<p>-------------------------------------------------------</p>
+</body>
+</html>

@@ -26,7 +26,10 @@ from fitnes_club import views as fitness_view
 
 common_patterns = [
     path('', common_view.home_page, name='home'),
+    re_path(r'^polygon1/$', common_view.polygon1_page, name='polygon1'),
+    re_path(r'^polygon2/$', common_view.polygon2_page, name='polygon2'),
     re_path(r'^info/$', common_view.company_info_page, name='info'),
+    path('article<int:pk>/', common_view.ArticleDetailsView.as_view(), name='article_details'),
     re_path(r'^news/$', common_view.news_page, name='news'),
     re_path(r'^faq/$', common_view.faq_page, name='faq'),
     re_path(r'^employees/$', common_view.employees_page, name='employees'),
@@ -50,6 +53,9 @@ instructor_patterns = [
 
 client_patterns = [
     path('', fitness_view.client_page, name='client'),
+    re_path(r'^cart/purchase/$', fitness_view.purchase_page, name='purchase'),
+    re_path(r'^cart/$', fitness_view.cart_page, name='cart'),
+    path('cart_delete<int:id>', fitness_view.cart_delete, name='cart_delete'),
     re_path(r'^change/$', fitness_view.client_change_page, name='client_change'),
     path('group<int:id>/', fitness_view.client_group_page, name='group_details'),
     re_path(r'^groups/$', fitness_view.groups_page, name='groups'),
@@ -79,4 +85,4 @@ urlpatterns = [
     re_path(r'^fitness/', include(fitness_patterns)),
     re_path(r'^home/', include(common_patterns)),
     re_path(r'^account/', include(account_patterns))
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

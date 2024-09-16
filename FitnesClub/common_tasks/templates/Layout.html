@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+      {% load static %}
+    {% endblock title%}
+    <link rel="icon" href="{% static 'Icon-logo.png' %}">
+</head>
+<body>
+<header>
+    <nav>
+        <a href="{% url 'home' %}"><img align="middle" src="{% static 'Logo.webp' %}" height="150"></a>
+        <a href="{% url 'info' %}"><button>О компании</button></a>
+        <a href="{% url 'news' %}"><button>Новости</button></a>
+        <a href="{% url 'faq' %}"><button>FAQ</button></a>
+        <a href="{% url 'employees' %}"><button>Сотрудники</button></a>
+        <a href="{% url 'vacancies' %}"><button>Вакансии</button></a>
+        <a href="{% url 'feedback' %}"><button>Отзывы</button></a>
+        <a href="{% url 'coupons' %}"><button>Купоны</button></a>
+        <a href="{% url 'fitness' %}"><button>ФитнесКлуб</button></a>
+        <a href="{% url 'polygon1' %}"><button>Полигон тегов 1</button></a>
+        <a href="{% url 'polygon2' %}"><button>Полигон тегов 2</button></a>
+    </nav>
+</header>
+{% block content %}
+{% endblock content %}
+<footer>
+    <p>Рандомный текст сгенерированный моим мозгом для того чтобы заполнить тег футер!</p>
+</footer>
+</body>
+</html>

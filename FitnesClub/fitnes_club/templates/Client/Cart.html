@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if cart %}
+    {% for group in cart %}
+        <h2>Группа: {{group.name}}</h2>
+        <p><b>Цена вхождения: </b>{{group.all_price}}</p>
+        <a href="{% url 'group_buy' group.id %}"><button>Посмотреть</button></a>
+        <form method="POST" action="{% url 'cart_delete' group.id %}">
+        {% csrf_token %}
+        <p><input type="submit" value="Убрать из корзины"></p>
+        </form>
+    {% endfor %}
+    <a href="{% url 'purchase' %}"><button>Перейти к покупке</button></a>
+    {% else %}
+    <p>Вы ничего не добавили в корзину</p>
+    {% endif %}
+    <a href="{% url 'groups' %}"><button>Добавить группу</button></a>
+    <a href="{% url 'client' %}"><button>Вернуться</button></a>
+
+</body>
+</html>

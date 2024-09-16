@@ -1,0 +1,21 @@
+{% extends "Layout.html" %}
+{% block title %}
+    <title>Новость</title>
+{% endblock title %}
+{% block content %}
+<div align="center">
+    <article>
+      <p>Дата: {{article.date}}</p>
+      <p>Название: {{article.title}}</p>
+      {% if article.picture %}
+      <img src="{{article.picture.url}}">
+      {% else %}
+      <p>Картинка отсутствует(</p>
+      {% endif %}
+      <p>Описание: {{article.description}}</p>
+      <p>Текст: {{article.text}}</p>
+        <br>
+      <a href="{% url 'news' %}"><button>Вернуться</button></a>
+    </article>
+</div>
+{% endblock content %}

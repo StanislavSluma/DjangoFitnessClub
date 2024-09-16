@@ -24,7 +24,7 @@ class BaseModel(models.Model):
 
 # for page CompanyInfo
 class CompanyInfo(BaseModel):
-    logo = models.CharField(max_length=20)
+    logo = models.ImageField(upload_to="company_logos", default='')
     history = models.TextField()
     requisites = models.TextField()
     date = models.DateField()

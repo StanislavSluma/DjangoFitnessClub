@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>История</title>
+    {% load static %}
 </head>
 <header>
     <a href="{% url 'home' %}"><button>На главную</button></a>
@@ -10,11 +11,16 @@
 <body>
 <div align="center">
     <h1> Информация о компании </h1>
+    <video controls width="540" height="360">
+        <source src="{% static 'shrek.mp4' %}" type="video/mp4" />
+        Video cannot be displayed
+    </video>
+
     {% if info %}
     <h2> История по годам </h2>
     {% for el in info %}
         <p>Год:  {{el.date|date:"Y"}}</p>
-        <p>Лого: {{el.logo}}</p>
+        <p>Лого: <img align="middle" src="{{el.logo.url}}" height="150"></p>
         <p>История: {{el.history}}</p>
         <p>Реквизиты: {{el.requisites}}</p>
         <br/>
@@ -22,6 +28,7 @@
     {% else %}
         <h2>История утерена!(((</h2>
     {% endif %}
+    <img src="{% static 'sertificate.jpg' %}" height="300">
 </div>
 </body>
 </html>

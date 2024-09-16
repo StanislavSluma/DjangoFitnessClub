@@ -3,7 +3,10 @@
 {% block header %} Новости {% endblock header %}
 {% block content %}
     {% if news %}
+<section>
+    <h1>NEWS</h1>
     {% for el in news%}
+<article>
     <p>Дата: {{el.date}}</p>
     <p>Название: {{el.title}}</p>
     {% if el.picture %}
@@ -12,10 +15,14 @@
     <p>Картинка отсутствует(</p>
     {% endif %}
     <p>Описание: {{el.description}}</p>
-    <p>Текст: {{el.text}}</p>
-    <br/>
+    <p>Текст: {{el.text|truncatechars:60}}</p>
+    <a href="{% url 'article_details' el.id %}"><button>Смотреть</button></a>
+    <br>
+</article>
     {% endfor %}
     {% else %}
     <p>Новостей няма(</p>
+</section>
     {% endif %}
+
 {% endblock content %}

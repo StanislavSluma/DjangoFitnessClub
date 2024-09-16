@@ -59,6 +59,10 @@ def signin_page(request):
         login(request, user)
         logger.info("INFO: User signin successful ")
         # return HttpResponseRedirect('/fitness/client/')
+        cart = request.session.get('cart', None)
+        if cart != None:
+            cart.clear()
+            request.session.modified = True
         return HttpResponseRedirect(reverse('client'))
     else:
         form = RegisterForm()
@@ -72,6 +76,10 @@ def login_page(request):
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
+            cart = request.session.get('cart', None)
+            if cart != None:
+                cart.clear()
+                request.session.modified = True
             if user.groups.filter(name='Client').count():
                 login(request, user)
                 logger.info("INFO: User is Client")
@@ -152,9 +160,9 @@ def client_club_card_page(request):
     else:
         name = 'Невероятно удачливая клубная карта'
     try:
-        client.clubcard = ClubCard.objects.update(name=name, discount=discount, end_date=end_date, client=client)
+        client.clubcard.update(name=name, discount=discount, end_date=end_date, client=client)
+        client.clubcard.save()
     except:
-        client.clubcard.delete()
         client.clubcard = ClubCard.objects.create(name=name, discount=discount, end_date=end_date, client=client)
     client.save()
     return HttpResponseRedirect(reverse('user'))
@@ -181,22 +189,98 @@ def groups_page(request):
 def group_buy_page(request, id):
     group = Group.objects.get(id=id)
     if request.method == "POST":
+        if 'cart' not in request.session:
+            request.session['cart'] = {}
+
+        cart = request.session['cart']
+
+        if id not in cart:
+            cart[id] = {
+                'id': id,
+                'all_price': group.all_price,
+                'name': group.name
+            }
+
+        request.session.modified = True
+        # client = Client.objects.get(user=request.user)
+        # client.group_set.add(group)
+        # coupon = Coupon.objects.filter(code=request.POST['coupon'])
+        # if coupon.count() and coupon[0].end_date > datetime.date.today():
+        #     coupon = coupon[0].discount
+        # else:
+        #     coupon = 0
+        # try:
+        #     if client.clubcard.end_date > datetime.date.today():
+        #         coupon += client.clubcard.discount
+        # except:
+        #     coupon = coupon
+        # client.expenses += group.all_price * (100 - coupon) / 100
+        # if group.max_clients <= group.clients.count():
+        #     group.is_open = False
+        # client.save()
+        # return HttpResponseRedirect(reverse('client'))
+    workouts = group.workout_set.all()
+    return render(request, "Client/GroupBuyPage.html", {'group': group, 'workouts': workouts})
+
+
+@login_required(login_url='/account/login')
+@user_passes_test(client_check, login_url="/account/login")
+def cart_page(request):
+    cart = request.session.get('cart')
+    print(cart)
+    list_cart = []
+    if cart:
+        for key in cart:
+            list_cart.append(cart[key])
+    return render(request, 'Client/Cart.html', {'cart': list_cart})
+
+
+@login_required(login_url='/account/login')
+@user_passes_test(client_check, login_url="/account/login")
+def cart_delete(request, id):
+    cart = request.session['cart']
+    del cart[f"{id}"]
+    request.session.modified = True
+    return HttpResponseRedirect(reverse('cart'))
+
+
+@login_required(login_url='/account/login')
+@user_passes_test(client_check, login_url="/account/login")
+def purchase_page(request):
+    cart = request.session.get('cart')
+    total_price = 0
+    for i in cart:
+        total_price += cart[i]['all_price']
+
+    if request.method == "POST":
         client = Client.objects.get(user=request.user)
-        client.group_set.add(group)
+        for key in cart:
+            group = Group.objects.get(id=key)
+            client.group_set.add(group)
+
         coupon = Coupon.objects.filter(code=request.POST['coupon'])
         if coupon.count() and coupon[0].end_date > datetime.date.today():
             coupon = coupon[0].discount
         else:
             coupon = 0
-        if client.clubcard.end_date > datetime.date.today():
-            coupon += client.clubcard.discount
-        client.expenses += group.all_price * (100 - coupon) / 100
-        if group.max_clients <= group.clients.count():
-            group.is_open = False
+        try:
+            if client.clubcard.end_date > datetime.date.today():
+                coupon += client.clubcard.discount
+        except:
+            coupon = coupon
+        client.expenses += total_price * (100 - coupon) / 100
+
+        for key in cart:
+            group = Group.objects.get(id=key)
+            if group.max_clients <= group.clients.count():
+                group.is_open = False
+                group.save()
         client.save()
+
+        cart.clear()
+        request.session.modified = True
         return HttpResponseRedirect(reverse('client'))
-    workouts = group.workout_set.all()
-    return render(request, "Client/GroupBuyPage.html", {'group': group, 'workouts': workouts})
+    return render(request, 'Client/Purchase.html', {'total_price': total_price})
 
 
 @login_required(login_url='/account/login')
@@ -222,6 +306,10 @@ def workout_clients_page(request, id):
 
 
 def logout_page(request):
+    cart = request.session.get('cart', None)
+    if cart != None:
+        cart.clear()
+        request.session.modified = True
     logout(request)
     # return HttpResponseRedirect('/fitness/')
     return HttpResponseRedirect(reverse('fitness'))

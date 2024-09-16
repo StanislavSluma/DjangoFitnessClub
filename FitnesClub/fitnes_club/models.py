@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 import re
+
+from django.template.defaultfilters import default
+
 from common_tasks.models import BaseModel
 from django.core.validators import ValidationError, MinValueValidator, MaxValueValidator
 
@@ -72,3 +75,10 @@ class ClubCard(BaseModel):
     end_date = models.DateField()
     discount = models.PositiveSmallIntegerField() # 0 < x < 99
     client = models.OneToOneField(Client, on_delete=models.CASCADE)
+
+
+class Partner(BaseModel):
+    name = models.CharField(max_length=50),
+    url = models.URLField(default='https://adrenalin-fitness.by/')
+    logo = models.ImageField(upload_to="partners_logo/", default='')
+

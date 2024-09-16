@@ -9,23 +9,32 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
+from django.views.generic import DetailView
 
 from .models import Article, CompanyInfo, Coupon, Faq, Vacancy, Review
-from fitnes_club.models import Client, Instructor
+from fitnes_club.models import Client, Instructor, Partner
 from .forms import ReviewForm
+
+
+def polygon1_page(request):
+    return render(request, "Polygon1.html")
+
+
+def polygon2_page(request):
+    return render(request, "Polygon2.html")
 
 
 def home_page(request):
     current_datetime = datetime.datetime.now()
-    #user_timezone = datetime.datetime.now(timezone.timezone.utc).astimezone().tzinfo
-    user_timezone = timezone.localtime(timezone.now())
+    #current_time = datetime.datetime.now(timezone.timezone.utc).astimezone().tzinfo
+    #user_timezone = timezone.localtime(timezone.now())
     text_calendar = calendar.TextCalendar().formatmonth(current_datetime.year, current_datetime.month).split('\n')
     width = len(text_calendar[1])
     text_calendar[0] += ' '*(width-len(text_calendar[0]))
     text_calendar[-2] += ' '*(width-len(text_calendar[-2]))
     text_calendar = '\n' + reduce(lambda x, y: x + '\n' + y, text_calendar)
     # print(text_calendar.replace(' ', '*'))
-
+    tz = "UTC"
     try:
         latest_article = Article.objects.order_by('-date')[0]
     except IndexError:
@@ -42,13 +51,28 @@ def home_page(request):
     else:
         dog_api = None
 
+    response = requests.get("https://api.ipify.org/?format=json")
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Parse the JSON response
+        data = response.json()
+        ip_address = data["ip"]
+        response = requests.get(f"https://ipinfo.io/{ip_address}/geo")
+        if response.status_code == 200:
+            # Parse the JSON response
+            data = response.json()
+            tz = data['timezone']
+
+    partners = Partner.objects.all()
     context = {
         'article': latest_article,
         'cat': cat_api,
         'dog': dog_api,
         'cur_time': current_datetime,
         'calendar': text_calendar,
-        'tz': user_timezone
+        'tz': tz,
+        'partners': partners
     }
     return render(request, 'HomePage.html', context)
 
@@ -61,6 +85,12 @@ def company_info_page(request):
 def news_page(request):
     info = Article.objects.order_by("-date")
     return render(request, "NewsPage.html", {'news': info})
+
+
+class ArticleDetailsView(DetailView):
+    model = Article
+    template_name = 'ArticleDetailsPage.html'
+    context_object_name = 'article'
 
 
 def employees_page(request):

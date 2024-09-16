@@ -3,13 +3,17 @@
 {% block header %} Самые частые вопросы {% endblock header %}
 {% block content %}
     {% if faqs %}
+<aside>
     {% for el in faqs%}
-    <p>Дата: {{el.date}}</p>
-    <p>Вопрос: {{el.question}}</p>
-    <p>Ответ: {{el.answer}}</p>
+    <details>
+        <summary>{{el.question}}</summary>
+        <p>Дата: {{el.date}}</p>
+        <p>Ответ: {{el.answer}}</p>
+    </details>
     <br/>
     {% endfor %}
     {% else %}
     <p>Вопросы? Вопросов нет!</p>
+</aside>
     {% endif %}
 {% endblock content %}
