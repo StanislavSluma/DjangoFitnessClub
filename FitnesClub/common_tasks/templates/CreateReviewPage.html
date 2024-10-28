@@ -1,17 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends "Layout.html" %}
+{% block title %}
     <title>Отзыв</title>
-</head>
-<body>
-<div align="center">
-    <h2>Оставить отзыв</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" value="Оставить отзыв">
+{% endblock title %}
+{% block content %}
+<div class="feedback-form">
+    <h2>Ваш отзыв</h2>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <div>
+        {{ form.text }}
+      </div>
+
+      <div class="rating">
+        <input type="radio" id="star5" name="grade" value="5" {% if form.grade.value == '5' %}checked{% endif %}>
+          <label for="star5" title="5 stars">&#9733;</label>
+        <input type="radio" id="star4" name="grade" value="4" {% if form.grade.value == '4' %}checked{% endif %}>
+          <label for="star4" title="4 stars">&#9733;</label>
+        <input type="radio" id="star3" name="grade" value="3" {% if form.grade.value == '3' %}checked{% endif %}>
+          <label for="star3" title="3 stars">&#9733;</label>
+        <input type="radio" id="star2" name="grade" value="2" {% if form.grade.value == '2' %}checked{% endif %}>
+          <label for="star2" title="2 stars">&#9733;</label>
+        <input type="radio" id="star1" name="grade" value="1" {% if form.grade.value == '1' %}checked{% endif %}>
+          <label for="star1" title="1 star">&#9733;</label>
+      </div>
+
+      <button type="submit">Отправить!</button>
     </form>
-</div>
-</body>
-</html>
+  </div>
+{% endblock content %}

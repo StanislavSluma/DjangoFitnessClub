@@ -1,23 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Инструкторы</title>
-</head>
-<body>
-<a href="{% url 'fitness' %}"><button>Вернуться</button></a>
-<div align="center">
+{% extends "FitnessLayout.html" %}
+{% block content %}
     {% if instructors %}
-    {% for el in instructors %}
-        <img src="{{el.photo.url}}">
-        <p>ФИО: {{el.fullname}}</p>
-        <p>Возраст: {{el.age}}</p>
-        <p><a href="{% url 'instructor_details' el.id %}"><button>Перейти</button></a></p>
-        <br/>
+    <div class="instructors-container">
+        {% for el in instructors%}
+        <div class="instructor">
+            {% if el.photo %}
+                <img src="{{el.photo.url}}">
+            {% else %}
+                <p>Фото отсутствует(</p>
+            {% endif %}
+            <p><b>ФИО: </b>{{el.fullname}}</p>
+            <p><b>Возраст: </b>{{el.age}}</p>
+            <p><b>Номер телефона: </b>{{el.phone_number}}</p>
+            {% if el.about %}
+                <p><b>О себе: </b>{{el.about|truncatechars:20}}</p>
+            {% else %}
+                <p>Этот инструктор не оставил ничего о себе</p>
+            {% endif %}
+            <p><a href="{% url 'instructor_details' el.id %}"><button>Перейти</button></a></p>
+        </div>
     {% endfor %}
+    </div>
     {% else %}
-        <p>Инструкторов пока нет :-(</p>
+    <p>Вы все уволены!</p>
     {% endif %}
-</div>
-</body>
-</html>
+{% endblock content %}

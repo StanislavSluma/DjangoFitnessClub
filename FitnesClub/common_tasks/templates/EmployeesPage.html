@@ -3,16 +3,25 @@
 {% block header %} Сотрудники {% endblock header %}
 {% block content %}
     {% if employees %}
-    {% for el in employees%}
-    <p>ФИО: {{el.fullname}}</p>
-    {% if el.photo %}
-    <img src="{{el.photo.url}}">
-    {% else %}
-    <p>Фото отсутствует(</p>
-    {% endif %}
-    <p>О себе: {{el.about}}</p>
-    <br/>
+    <div class="instructors-container">
+        {% for el in employees%}
+        <div class="instructor">
+            {% if el.photo %}
+                <img src="{{el.photo.url}}">
+            {% else %}
+                <p>Фото отсутствует(</p>
+            {% endif %}
+            <p><b>ФИО: </b>{{el.fullname}}</p>
+            <p><b>Возраст: </b>{{el.age}}</p>
+            <p><b>Номер телефона: </b>{{el.phone_number}}</p>
+            {% if el.about %}
+                <p><b>О себе: </b>{{el.about|truncatechars:100}}</p>
+            {% else %}
+                <p>Этот инструктор не оставил ничего о себе</p>
+            {% endif %}
+        </div>
     {% endfor %}
+    </div>
     {% else %}
     <p>Вы все уволены!</p>
     {% endif %}

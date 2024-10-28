@@ -79,8 +79,10 @@ def home_page(request):
 
 def company_info_page(request):
     info = CompanyInfo.objects.order_by("date")
-    return render(request, "CompanyInfoPage.html", {'info': info})
+    return render(request, "CompanyInfoPage.html", {'info': reversed(info)})
 
+def privacy_page(request):
+    return render(request, "PrivacyAndPolicyPage.html")
 
 def news_page(request):
     info = Article.objects.order_by("-date")
@@ -115,7 +117,8 @@ def reviews_page(request):
 
 def coupons_page(request):
     coupons = Coupon.objects.order_by('-end_date')
-    return render(request, "CouponsPage.html", {'coupons': coupons})
+    date = datetime.date.today()
+    return render(request, "CouponsPage.html", {'coupons': coupons, 'date': date})
 
 
 def instructors(request, name, age):
@@ -138,6 +141,6 @@ def create_review_page(request):
         Review.objects.create(name=name, date=date, text=text, grade=grade)
         return HttpResponseRedirect(reverse('feedback'))
     else:
-        return render(request, 'CreateReviewPage.html', {'form': form})
+       return render(request, 'CreateReviewPage.html', {'form': form})
 
 

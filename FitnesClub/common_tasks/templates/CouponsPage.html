@@ -4,13 +4,23 @@
 {% block content %}
     {% if coupons %}
     {% for el in coupons %}
-    <p>{{el.name}}</p>
-    <p>Дата окончания: {{el.end_date}}</p>
-    <p>Описание: {{el.description}}</p>
-    <p>Код: {{el.code}}</p>
-    <br/>
+    {% if el.end_date > date %}
+        <div class='coupon' title="active">
+            <p>{{el.name}}</p>
+            <p>Дата окончания: {{el.end_date}}</p>
+            <p>Описание: {{el.description}}</p>
+            <p>Код: {{el.code}}</p>
+        </div>
+    {% else %}
+        <div class='coupon' title="inactive">
+            <p>{{el.name}}</p>
+            <p>Дата окончания: {{el.end_date}}</p>
+            <p>Описание: {{el.description}}</p>
+            <p>Код: {{el.code}}</p>
+        </div>
+    {% endif %}
     {% endfor %}
     {% else %}
-    <p>Налетай, подешевело, было рубль, стало два!!</p>
+        <p>Налетай, подешевело, было рубль, стало два!!</p>
     {% endif %}
 {% endblock content %}

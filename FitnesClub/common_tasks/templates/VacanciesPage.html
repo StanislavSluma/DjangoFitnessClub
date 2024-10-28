@@ -3,12 +3,15 @@
 {% block header %} Вакансии {% endblock header %}
 {% block content %}
     {% if vacancies %}
-    {% for el in vacancies %}
-    <p>Праца: {{el.name}}</p>
-    <p>Описание: {{el.description}}</p>
-    <p>Зарплата: {{el.salary}}</p>
-    <br/>
-    {% endfor %}
+    <div class="vacancy-container">
+        {% for el in vacancies %}
+        <div class="vacancy">
+            <p>Праца: {{el.name}}</p>
+            <p>Описание: {{el.description}}</p>
+            <p>Зарплата: {{el.salary}}</p>
+        </div>
+        {% endfor %}
+    </div>
     {% else %}
     <p>Таких как вы тут уже хватает!</p>
     {% endif %}

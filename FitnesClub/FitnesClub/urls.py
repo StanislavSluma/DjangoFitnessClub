@@ -28,6 +28,7 @@ common_patterns = [
     path('', common_view.home_page, name='home'),
     re_path(r'^polygon1/$', common_view.polygon1_page, name='polygon1'),
     re_path(r'^polygon2/$', common_view.polygon2_page, name='polygon2'),
+    re_path(r'^privacy/$', common_view.privacy_page, name='privacy'),
     re_path(r'^info/$', common_view.company_info_page, name='info'),
     path('article<int:pk>/', common_view.ArticleDetailsView.as_view(), name='article_details'),
     re_path(r'^news/$', common_view.news_page, name='news'),

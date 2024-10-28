@@ -4,14 +4,15 @@
 {% block content %}
     {% if faqs %}
 <aside>
+    <div>
     {% for el in faqs%}
-    <details>
-        <summary>{{el.question}}</summary>
-        <p>Дата: {{el.date}}</p>
-        <p>Ответ: {{el.answer}}</p>
-    </details>
-    <br/>
+        <details class="faq">
+            <summary>{{el.question}}</summary>
+            <p>Дата: {{el.date}}</p>
+            <p>Ответ: {{el.answer}}</p>
+        </details>
     {% endfor %}
+    </div>
     {% else %}
     <p>Вопросы? Вопросов нет!</p>
 </aside>

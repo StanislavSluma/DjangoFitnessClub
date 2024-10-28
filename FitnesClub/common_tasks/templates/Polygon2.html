@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
   {% load static %}
+    <link rel="icon" href="{% static 'Icon-logo.png' %}">
+    <link rel="stylesheet" href="{% static 'CSS/polygon.css' %}">
 </head>
 <body>
 <p>-------------------------------------------------------</p>
@@ -46,16 +48,19 @@
     <input type="submit" value="Log in">
 </form>
 <p>-------------------------------------------------------</p>
-<form action="http://server.com" method="post">
-  <input type="checkbox" name="vehicle"
-         value="Bike"> I have a bike<br>
-  <input type="checkbox" name="vehicle"
-         value="Car"> I have a car<br><br>
-  <input type="radio" name="gender" value="male">
-         Male<br>
-  <input type="radio" name="gender" value="female">
-         Female
-</form>
+    <form class="styled-form" action="http://server.com" method="post">
+        <input type="checkbox" class="styled-checkbox" name="vehicle" value="Bike"> I have a bike<br>
+        <input type="checkbox" class="styled-checkbox" name="vehicle" value="Car"> I have a car<br><br>
+
+        <input type="radio" class="styled-radio" name="gender" value="male"> Male<br>
+        <input type="radio" class="styled-radio" name="gender" value="female"> Female
+    </form>
+
+    Number:<input class="styled-range" type="number" name="number" max="10" min="0"><br>
+
+    <q lang="en" class="quote">This is an English quote.</q>
+    <q lang="fr" class="quote">Ceci est une citation en français.</q>
+    <q lang="ru" class="quote">Это русская цитата.</q>
 <!--vehicle=Bike&vehicle=Car&gender=male-->
 <p>-------------------------------------------------------</p>
 <form action="http://server.com" method="post">
@@ -99,97 +104,92 @@ URL:<input type="url" name="url"><br>
 Month:<input type="month" name="month"><br>
 Week:<input type="week" name="week"><br>
 <p>-------------------------------------------------------</p>
-<form action="http://server.com" method="post">
-   <textarea name="desc" cols="45" rows="10"
-             placeholder="Input description"
-             required maxlength="450"></textarea>
-   <br><br>
-   <input type="submit" value="Send!">
- </form>
-<p>-------------------------------------------------------</p>
-<form action="http://server.com" method="post">
- <select size="4" name="s1">
-   <option disabled>Choose a hero:</option>
-   <option value="iron">Iron Man</option>
-   <option selected value="captain">Captain America</option>
-   <option value="thor">Thor</option>
- </select>
- <br>
- <select size="1" name="s2">
-   <option disabled>Choose a hero:</option>
-   <option value="iron">Iron Man</option>
-   <option selected value="captain">Captain America</option>
-   <option value="thor">Thor</option>
- </select>
- <br>
- <input type="submit" value="Send!">
-</form>
-<p>-------------------------------------------------------</p>
-<select size="3" name="list">
-  <option disabled>Disabled item</option>
-  <option selected value="sel">
-     Selected item
-  </option>
-  <option label="Label" value="lab">
-     Labeled item
-  </option>
-</select>
-<p>-------------------------------------------------------</p>
-<select size="1" name="list">
-  <option value="v1">Not in group</option>
-  <optgroup label="Group 1">
-    <option value="v2">Item G1-1</option>
-    <option value="v3">Item G1-2</option>
-  </optgroup>
-  <optgroup label="Group 2">
-    <option value="v4">Item G2-1</option>
-    <option value="v5">Item G2-2</option>
-  </optgroup>
-</select>
-<p>-------------------------------------------------------</p>
-<form action="http://server.com" method="post">
-  <p>
-   Fruit: <input list="fruitlist" id="fave" name="fave" />
-  </p>
-  <button type="submit">Submit Vote</button>
-</form>
+<form class="styled-form" action="http://server.com" method="post">
+        <textarea class="styled-textarea" name="desc" cols="45" rows="10"
+                  placeholder="Input description"
+                  maxlength="12" required></textarea>
+        <br><br>
+        <input class="styled-button" type="submit" value="Send!">
+    </form>
 
-<datalist id="fruitlist">
-  <option value="Apples" label="Lovely Apples" />
-  <option value="Oranges">Refreshing Oranges</option>
-  <option value="Cherries" />
-</datalist>
+    <p class="separator">-------------------------------------------------------</p>
+
+    <form class="styled-form" action="http://server.com" method="post">
+        <select class="styled-select" size="4" name="s1">
+            <option disabled>Choose a hero:</option>
+            <option value="iron">Iron Man</option>
+            <option selected value="captain">Captain America</option>
+            <option value="thor">Thor</option>
+        </select>
+        <br>
+        <select class="styled-select" size="1" name="s2">
+            <option disabled>Choose a hero:</option>
+            <option value="iron">Iron Man</option>
+            <option selected value="captain">Captain America</option>
+            <option value="thor">Thor</option>
+        </select>
+        <br>
+        <input class="styled-button" type="submit" value="Send!">
+    </form>
+
+    <p class="separator">-------------------------------------------------------</p>
+
+    <select class="styled-select" size="3" name="list">
+        <option disabled>Disabled item</option>
+        <option selected value="sel">Selected item</option>
+        <option label="Label" value="lab">Labeled item</option>
+    </select>
+
+    <p class="separator">-------------------------------------------------------</p>
+
+    <select class="styled-select" size="1" name="list">
+        <option value="v1">Not in group</option>
+        <optgroup label="Group 1">
+            <option value="v2">Item G1-1</option>
+            <option value="v3">Item G1-2</option>
+        </optgroup>
+        <optgroup label="Group 2">
+            <option value="v4">Item G2-1</option>
+            <option value="v5">Item G2-2</option>
+        </optgroup>
+    </select>
+
+    <p class="separator">-------------------------------------------------------</p>
+
+    <form class="styled-form" action="http://server.com" method="post">
+        <p>Fruit: <input class="styled-input" list="fruitlist" id="fave" name="fave" /></p>
+        <button class="styled-button" type="submit">Submit Vote</button>
+    </form>
+
+    <datalist id="fruitlist">
+        <option value="Apples" label="Lovely Apples"></option>
+        <option value="Oranges">Refreshing Oranges</option>
+        <option value="Cherries"></option>
+    </datalist>
+
+    <p class="separator">-------------------------------------------------------</p>
+
+    <form class="styled-form" action="http://server.com" method="post">
+        <button class="styled-button" type="button" name="btn">
+            <p>Paragraph 1</p>
+            <p>Paragraph 2</p>
+        </button>
+    </form>
+
+    <p class="separator">-------------------------------------------------------</p>
+
+    <form class="styled-form" action="http://server.com" method="post">
+        <fieldset class="styled-fieldset" title="Login info">
+            <legend>User info</legend>
+            <label for="usr">User:</label>
+            <input class="styled-input" id="usr" type="text" name="usr"><br>
+            <label>Pass:
+                <input class="styled-input" type="password" name="pass">
+            </label><br>
+            <input class="styled-button" type="submit" value="Login">
+        </fieldset>
+    </form>
 <p>-------------------------------------------------------</p>
-<form action="http://server.com" method="post">
-    <button type="button" name="btn">
-        <p>Paragraph 1</p>
-        <p>Paragraph 2</p>
-    </button>
-</form>
-<p>-------------------------------------------------------</p>
-<form action="http://server.com" method="post">
-    <fieldset title="Login info">
-      <legend>User info</legend>
-      User: <input type="text" name="usr"><br>
-      Pass: <input type="password" name="pass">
-      <br>
-      <input type="submit" value="Login">
-    </fieldset>
-</form>
-<p>-------------------------------------------------------</p>
-<form action="http://server.com" method="post">
-  <fieldset title="Login info">
-    <legend>User info</legend>
-    <label for="usr">User:</label>
-    <input id="usr" type="text" name="usr"><br>
-    <label>Pass:
-      <input type="password" name="pass">
-    </label><br>
-    <input type="submit" value="Login">
-  </fieldset>
-</form>
-<p>-------------------------------------------------------</p>
-<!-- локальное изображение -->
 <img src="HTML5_Logo.png" alt="HTML5">
 <p>-------------------------------------------------------</p>
 <a href="http://issoft.by">
@@ -201,7 +201,6 @@ Week:<input type="week" name="week"><br>
 This is official HTML5 logo.
     Lorem ipsum — dolor sit amet,
     consectetuer adipiscing elit,
-<!-- ПАЧИМУ НЕ РАБОТАЕТ-->
 <p>-------------------------------------------------------</p>
 <img src="{% static 'Icon.png' %}"
   srcset="{% static 'Icon.png' %} 1x,
@@ -277,30 +276,5 @@ This is official HTML5 logo.
     <source src="mytrack.wav" />
     Audio content cannot be played
 </audio>
-<p>-------------------------------------------------------</p>
-
-<p>-------------------------------------------------------</p>
-
-<p>-------------------------------------------------------</p>
-
-<p>-------------------------------------------------------</p>
-
-<p>-------------------------------------------------------</p>
-
-<p>-------------------------------------------------------</p>
-
-<p>-------------------------------------------------------</p>
-
-<p>-------------------------------------------------------</p>
-
-<p>-------------------------------------------------------</p>
-
-<p>-------------------------------------------------------</p>
-
-<p>-------------------------------------------------------</p>
-
-<p>-------------------------------------------------------</p>
-
-<p>-------------------------------------------------------</p>
 </body>
 </html>

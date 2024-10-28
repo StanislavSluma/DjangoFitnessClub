@@ -5,7 +5,18 @@
 {% endblock title %}
 {% block content %}
 <div align="center">
-    <h1>Глaвная</h1>
+    <h1 class="company-name" style="font-size: 100px;">Фитнесс клуб</h1>
+    <div class="scene">
+        <div class="person cycling">
+          <div class="legs"></div>
+          <div class="bike"></div>
+        </div>
+        <div class="jumping">
+            <img src="{% static 'skakalka_bez_devochki.png' %}"/>
+        </div>
+    </div>
+
+    <h2>Глaвная</h2>
     <p>
          Текущая дата: {{ cur_time|date:"d/m/Y" }}
     </p>
@@ -34,17 +45,17 @@
     srcset="{% static 'banner_1.png' %} 1694w,
             {% static 'banner_2.png' %} 1496w,
             {% static 'banner_3.png' %} 1485w">
-    <div align = "left">
+    <article class="last-info news">
         <h3>Последняя опубликованная статья</h3>
         {% if article %}
             <p>Дата публикации: {{article.date}}<p>
             <p>Название: {{article.title}}</p>
             <p>Описание: {{article.description}}</p>
-            <p>Текст: {{article.text}}</p>
+            <p class="news">Текст: {{article.text}}</p>
         {% else %}
             <p>Статей пока не было(</p>
         {% endif %}
-    </div>
+    </article>
     <details open>
         <summary>Кошечки - Собачки</summary>
         {% if cat %}
@@ -66,7 +77,7 @@
             <ul type="square">
                 {% if partners %}
                 {% for partner in partners %}
-                    <li><a target="_blank" href="{{partner.url}}"><img width="300" align="middle" src = "{{partner.logo.url}}"></a></li>
+                    <li class="circle_blocks"><a target="_blank" href="{{partner.url}}"><img align='middle' src = "{{partner.logo.url}}"></a></li>
                 {% endfor %}
                 {% endif %}
             </ul>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <title>Политика конфиденциальности - Фитнес Клуб</title>
+    <style>
+        header {
+            margin: 20px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: lightblue;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 10px auto;
+        }
+        h1 {
+            color: black;
+            text-align: center;
+        }
+        p {
+            color: grey;
+        }
+        .content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 20px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        footer {
+            text-align: center;
+            color: #999;
+            font-size: 0.8em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<header>
+    <nav>
+        <a href="{% url 'home' %}"><img class="logo" align="middle" src="{% static 'Logo.webp' %}" height="150"></a>
+        <a href="{% url 'privacy' %}">Конфиденциальность</a>
+        <a href="{% url 'info' %}"><button>О компании</button></a>
+        <a href="{% url 'news' %}"><button>Новости</button></a>
+        <a href="{% url 'faq' %}"><button>FAQ</button></a>
+        <a href="{% url 'employees' %}"><button>Сотрудники</button></a>
+        <a href="{% url 'vacancies' %}"><button>Вакансии</button></a>
+        <a href="{% url 'feedback' %}"><button>Отзывы</button></a>
+        <a href="{% url 'coupons' %}"><button>Купоны</button></a>
+        <a href="{% url 'fitness' %}"><button>ФитнесКлуб</button></a>
+        <a href="{% url 'polygon1' %}"><button>Полигон тегов 1</button></a>
+        <a href="{% url 'polygon2' %}"><button>Полигон тегов 2</button></a>
+    </nav>
+</header>
+<body>
+    <div class="content">
+        <h1>Политика конфиденциальности</h1>
+        <p>Ваша конфиденциальность очень важна для нас. Ниже приведено объяснение, каким образом мы собираем, используем, раскрываем и защищаем вашу информацию при использовании нашего веб-сайта и наших услуг.</p>
+        <h2>Сбор информации</h2>
+        <p>Мы собираем информацию, которую вы предоставляете нам напрямую, когда заполняете формы на нашем сайте, подписываетесь на рассылку или взаимодействуете с нашими услугами.</p>
+        <h2>Использование информации</h2>
+        <p>Мы используем собранную информацию для предоставления и улучшения наших услуг, для связи с вами, для анализа использования нашего сайта и для улучшения пользовательского опыта.</p>
+        <h2>Защита информации</h2>
+        <p>Мы применяем соответствующие меры безопасности для защиты вашей личной информации от несанкционированного доступа, изменения, раскрытия или уничтожения.</p>
+        <h2>Согласие с политикой конфиденциальности</h2>
+        <p>Используя наш веб-сайт, вы соглашаетесь с нашей политикой конфиденциальности.</p>
+        <p>Последнее обновление: Октябрь 2024 года</p>
+    </div>
+</body>
+<footer>
+    <p>&copy; 2024 Фитнес Клуб. Все права защищены.</p>
+</footer>
+</html>

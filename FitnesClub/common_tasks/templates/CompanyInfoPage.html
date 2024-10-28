@@ -4,31 +4,83 @@
     <meta charset="UTF-8">
     <title>История</title>
     {% load static %}
+    <link rel="stylesheet" href="{% static 'CSS/site.css' %}">
 </head>
-<header>
-    <a href="{% url 'home' %}"><button>На главную</button></a>
+<header class="navigation">
+    <nav>
+        <a href="{% url 'home' %}"><img class="logo" align="middle" src="{% static 'Logo.webp' %}" height="150"></a>
+        <a href="{% url 'privacy' %}">Конфиденциальность</a>
+        <a href="{% url 'info' %}"><button>О компании</button></a>
+        <a href="{% url 'news' %}"><button>Новости</button></a>
+        <a href="{% url 'faq' %}"><button>FAQ</button></a>
+        <a href="{% url 'employees' %}"><button>Сотрудники</button></a>
+        <a href="{% url 'vacancies' %}"><button>Вакансии</button></a>
+        <a href="{% url 'feedback' %}"><button>Отзывы</button></a>
+        <a href="{% url 'coupons' %}"><button>Купоны</button></a>
+        <a href="{% url 'fitness' %}"><button>ФитнесКлуб</button></a>
+        <a href="{% url 'polygon1' %}"><button>Полигон тегов 1</button></a>
+        <a href="{% url 'polygon2' %}"><button>Полигон тегов 2</button></a>
+    </nav>
 </header>
 <body>
 <div align="center">
     <h1> Информация о компании </h1>
-    <video controls width="540" height="360">
+    <video class="shrek_video" controls width="540" height="360">
         <source src="{% static 'shrek.mp4' %}" type="video/mp4" />
         Video cannot be displayed
     </video>
 
     {% if info %}
     <h2> История по годам </h2>
+    <ul class="history-list">
     {% for el in info %}
-        <p>Год:  {{el.date|date:"Y"}}</p>
-        <p>Лого: <img align="middle" src="{{el.logo.url}}" height="150"></p>
-        <p>История: {{el.history}}</p>
-        <p>Реквизиты: {{el.requisites}}</p>
-        <br/>
+        <li class="history">
+            <p>Год:  {{el.date|date:"Y"}}</p>
+            <p><img align="middle" src="{{el.logo.url}}" height="150"></p>
+            <p>История: {{el.history}}</p>
+            <p class="requisite">Реквизиты: {{el.requisites}}</p>
+        </li>
     {% endfor %}
+    </ul>
     {% else %}
         <h2>История утерена!(((</h2>
     {% endif %}
-    <img src="{% static 'sertificate.jpg' %}" height="300">
+    <section class="certificate-section">
+        <h2>Сертификат о регистрации</h2>
+        <p>Мы гордимся предоставляемыми услугами и качеством сервиса. Ваш путь к здоровому образу жизни начинается здесь!</p>
+        <div class="frame">
+            <div class="certificate">
+                <h1>ФИТНЕС-КЛУБ «FitnessClub»</h1>
+                <h2>СЕРТИФИКАТ</h2>
+                <p class="sub-title">о регистрации фитнес клуба</p>
+
+                <div class="content">
+                    <p>г. Минск</p>
+                    <p>1 января 2024 года</p>
+
+                    <p class="company-details">
+                        Фитнес-клуб «FitnessClub»<br>
+                        УНП: 1746352<br>
+                        Реестровый номер: 974832
+                    </p>
+                    <p class="program-details">
+                        Программа участия: <strong>Адаптация</strong><br>
+                        Период действия: с 01.01.2024 по 01.01.2030<br>
+                        Услуги включают: тренажерный зал, групповые занятия.
+                    </p>
+                    <div class="signatures">
+                        <p>Ответственное лицо: Бекарев Станислав</p>
+                        <div class="stamp-signature">
+                            <div class="signature-image">
+                                <img src="{% static './signature.png' %}">
+                            </div>
+                        </div>
+                        <p>Директор Фитнес-клуба</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 </body>
 </html>

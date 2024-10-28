@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>О инструкторе</title>
-</head>
-<body>
+{% extends "FitnessLayout.html" %}
+{% block title %}<title>Фитнес</title>{% endblock title %}
+{% block content %}
 <div align="center">
     <img src="{{instructor.photo.url}}">
     <p><b>ФИО: </b> {{instructor.fullname}}</p>
@@ -17,5 +13,4 @@
     {% endif %}
     <a href="{% url 'all_instructors' %}"><button>Вернуться</button></a>
 </div>
-</body>
-</html>
+{% endblock content %}

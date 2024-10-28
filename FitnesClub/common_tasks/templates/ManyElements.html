@@ -5,10 +5,12 @@
     <title>{% block title %}Default_Title{% endblock title %}</title>
     {% load static %}
     <link rel="icon" href="{% static 'Icon-logo.png' %}">
+    <link rel="stylesheet" href="{% static 'CSS/site.css' %}">
 </head>
-<header>
+<header class="navigation">
     <nav>
         <a href="{% url 'home' %}"><img align="middle" src="{% static 'Logo.webp' %}" height="150"></a>
+        <a href="{% url 'privacy' %}">Конфиденциальность</a>
         <a href="{% url 'info' %}"><button>О компании</button></a>
         <a href="{% url 'news' %}"><button>Новости</button></a>
         <a href="{% url 'faq' %}"><button>FAQ</button></a>

@@ -1,24 +1,24 @@
 {% extends "ManyElements.html" %}
 {% block title %} Новости {% endblock title %}
-{% block header %} Новости {% endblock header %}
+{% block header %}{% endblock header %}
 {% block content %}
     {% if news %}
-<section>
-    <h1>NEWS</h1>
+<section class="news">
+    <h1>НОВОСТИ</h1>
     {% for el in news%}
-<article>
-    <p>Дата: {{el.date}}</p>
-    <p>Название: {{el.title}}</p>
-    {% if el.picture %}
-    <img src="{{el.picture.url}}">
-    {% else %}
-    <p>Картинка отсутствует(</p>
-    {% endif %}
-    <p>Описание: {{el.description}}</p>
-    <p>Текст: {{el.text|truncatechars:60}}</p>
-    <a href="{% url 'article_details' el.id %}"><button>Смотреть</button></a>
-    <br>
-</article>
+    <article class="news">
+        <p>Дата: {{el.date}}</p>
+        <p>Название: {{el.title}}</p>
+        {% if el.picture %}
+        <img src="{{el.picture.url}}">
+        {% else %}
+        <p>Картинка отсутствует(</p>
+        {% endif %}
+        <p>Описание: {{el.description}}</p>
+        <p>Текст: {{el.text}}</p>
+        <a href="{% url 'article_details' el.id %}"><button>Читать далее</button></a>
+        <br>
+    </article>
     {% endfor %}
     {% else %}
     <p>Новостей няма(</p>

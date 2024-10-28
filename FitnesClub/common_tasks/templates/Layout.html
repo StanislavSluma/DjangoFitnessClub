@@ -6,11 +6,16 @@
       {% load static %}
     {% endblock title%}
     <link rel="icon" href="{% static 'Icon-logo.png' %}">
+    <link rel="stylesheet" href="{% static 'CSS/site.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kablammo&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
 <header>
-    <nav>
+    <nav class="navigation">
         <a href="{% url 'home' %}"><img align="middle" src="{% static 'Logo.webp' %}" height="150"></a>
+        <a href="{% url 'privacy' %}">Конфиденциальность</a>
         <a href="{% url 'info' %}"><button>О компании</button></a>
         <a href="{% url 'news' %}"><button>Новости</button></a>
         <a href="{% url 'faq' %}"><button>FAQ</button></a>
@@ -23,6 +28,7 @@
         <a href="{% url 'polygon2' %}"><button>Полигон тегов 2</button></a>
     </nav>
 </header>
+<div class="loader-container"><div class="loader"></div></div>
 {% block content %}
 {% endblock content %}
 <footer>
