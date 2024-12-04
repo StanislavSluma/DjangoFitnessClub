@@ -5,7 +5,18 @@
 {% endblock title %}
 {% block content %}
 <div align="center">
+    <!-- exercise_8 -->
+    <div class="parallax-container">
+        <img src="{% static 'dumbbells_left.png' %}" id="dumbbell-left" class="dumbbell" alt="Left Dumbbell">
+        <img src="{% static 'dumbbells_right.png' %}" id="dumbbell-right" class="dumbbell" alt="Right Dumbbell">
+        <img src="{% static 'scales.png' %}" id="scales" alt="Scales">
+    </div>
+    <!-- exercise_8 -->
     <h1 class="company-name" style="font-size: 100px;">Фитнесс клуб</h1>
+    <!-- exercise_2 -->
+    <h2>Таймер</h2>
+    <div id="countdown-timer">Загрузка таймера...</div>
+    <!-- exercise_2 -->
     <div class="scene">
         <div class="person cycling">
           <div class="legs"></div>
@@ -39,12 +50,40 @@
         {% endif %}
     </table>
     {% endcomment %}
-    <h2>Баннер</h2>
-    <img src="{% static 'banner_1.png' %}"
-     sizes="(max-width: 40em) 100vw, 50vw"
-    srcset="{% static 'banner_1.png' %} 1694w,
-            {% static 'banner_2.png' %} 1496w,
-            {% static 'banner_3.png' %} 1485w">
+    <!-- exercise_1 -->
+    <div class="slider-container" id="slider-container">
+        <div class="slider-wrapper" id="slider-wrapper">
+            <div class="slide"  data-caption="Подпись к первому слайду">
+                <a href="{% url 'fitness' %}"><img src="{% static 'banner_1.png' %}" height="300px" width="600" alt="Слайд 1"></a>
+            </div>
+            <div class="slide" data-caption="Подпись ко второму слайду">
+                <a href="{% url 'fitness' %}"><img src="{% static 'banner_2.png' %}" height="300px" width="600" alt="Слайд 2"></a>
+            </div>
+            <div class="slide" data-caption="Подпись к третьему слайду">
+                <a href="{% url 'fitness' %}"><img src="{% static 'banner_3.png' %}" height="300px" width="600" alt="Слайд 3"></a>
+            </div>
+        </div>  
+
+        <button class="slider-nav prev" id="prev-slide">&#9664;</button>
+        <button class="slider-nav next" id="next-slide">&#9654;</button>
+        <div class="pagination" id="pagination"></div>
+
+        <div class="slide-info">
+            <span class="slide-caption" id="slide-caption"></span>
+            <span class="slide-counter" id="slide-counter"></span>
+        </div>
+        {% if admin %}
+            <form id="slider-settings" onsubmit="return false;">
+                <label>Автопереключение (auto): <input type="checkbox" id="auto" checked></label>
+                <label>Интервал (сек): <input type="number" id="delay" min="1" value="5"></label>
+                <label>Лупинг (loop): <input type="checkbox" id="loop" checked></label>
+                <label>Стрелки (navs): <input type="checkbox" id="navs" checked></label>
+                <label>Пагинация (pags): <input type="checkbox" id="pags" checked></label>
+                <label>Остановка при наведении (stopMouseHover): <input type="checkbox" id="stopMouseHover" checked></label>
+            </form>
+        {% endif %}
+    </div>
+    <!-- exercise_1 -->
     <article class="last-info news">
         <h3>Последняя опубликованная статья</h3>
         {% if article %}
@@ -83,5 +122,10 @@
             </ul>
         </aside>
     </div>
+    <!-- exercise_8 -->
+    <div class="wheel-container">
+        <img src="{% static 'wheel.png' %}" alt="Wheel" class="wheel">
+    </div>
+    <!-- exercise_8 -->
 </div>
 {% endblock content %}

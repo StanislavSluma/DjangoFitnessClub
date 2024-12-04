@@ -15,6 +15,8 @@ from .models import Article, CompanyInfo, Coupon, Faq, Vacancy, Review
 from fitnes_club.models import Client, Instructor, Partner
 from .forms import ReviewForm
 
+from django.core.paginator import Paginator
+from django.shortcuts import render
 
 def polygon1_page(request):
     return render(request, "Polygon1.html")
@@ -25,6 +27,11 @@ def polygon2_page(request):
 
 
 def home_page(request):
+    user = request.user
+    admin = False
+    if user is not None and user.is_superuser:
+        admin = True
+
     current_datetime = datetime.datetime.now()
     #current_time = datetime.datetime.now(timezone.timezone.utc).astimezone().tzinfo
     #user_timezone = timezone.localtime(timezone.now())
@@ -66,6 +73,7 @@ def home_page(request):
 
     partners = Partner.objects.all()
     context = {
+        'admin': admin,
         'article': latest_article,
         'cat': cat_api,
         'dog': dog_api,
@@ -96,8 +104,13 @@ class ArticleDetailsView(DetailView):
 
 
 def employees_page(request):
-    employees = Instructor.objects.all()
-    return render(request, "EmployeesPage.html", {'employees': employees})
+    employees = Instructor.objects.all().order_by("fullname")
+    paginator = Paginator(employees, 3)
+
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "EmployeesPage.html", {'page_obj': page_obj})
 
 
 def faq_page(request):

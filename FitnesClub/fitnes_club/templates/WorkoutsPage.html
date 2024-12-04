@@ -1,31 +1,50 @@
 {% extends "FitnessLayout.html" %}
-{% block title %}<title>Фитнес</title>{% endblock title %}
+{% block title %}
+<title>Фитнес</title>
+    {% load static %}
+{% endblock title %}
 {% block content %}
 <div>
-    <form method="POST">
+    <form method="GET">
         {% csrf_token %}
         {% for field in form %}
-        {{field.label_tag}} <i>{{field.help_text}}</i>
-        <p>{{field}}</p>
+            {{ field.label_tag }} <i>{{ field.help_text }}</i>
+            <p>{{ field }}</p>
         {% endfor %}
-        <input type="submit" value="Принять" >
+        <input type="submit" value="Принять">
     </form>
 </div>
+
 <div class="grid-container" align="center">
     {% if workouts %}
     {% for el in workouts %}
         <div class="workout">
-            <p><b>Категория: </b>{{el.category}}</p>
-            <p><b>Группа: </b>{{el.group.name}}</p>
-            <p><b>Зал: </b>{{el.hall.name}}</p>
-            <p><b>Начало: </b>{{el.start_time}}</p>
-            <p><b>Конец: </b>{{el.end_time}}</p>
-            <p><b>Цена: </b>{{el.price}}</p>
-            <br/><br/>
+            <p><b>Категория: </b>{{ el.category }}</p>
+            <p><b>Группа: </b>{{ el.group.name }}</p>
+            <p><b>Зал: </b>{{ el.hall.name }}</p>
+            <p><b>Начало: </b>{{ el.start_time }}</p>
+            <p><b>Конец: </b>{{ el.end_time }}</p>
+            <p><b>Цена: </b>{{ el.price }}</p>
         </div>
     {% endfor %}
     {% else %}
-    <p>К сожалению таких занятий пока нет(</p>
+    <p>К сожалению таких занятий пока нет.</p>
+    {% endif %}
+</div>
+
+<div class="pagination">
+    {% if workouts.has_previous %}
+        <a href="?page=1&{{ filter_query }}">&#9664;&#9664;</a>
+        <span>&nbsp;&nbsp;</span>
+        <a href="?page={{ workouts.previous_page_number }}&{{ filter_query }}">&#9664;</a>
+    {% endif %}
+
+    <span>&nbsp;&nbsp;&nbsp;Страница {{ workouts.number }} из {{ workouts.paginator.num_pages }}&nbsp;&nbsp;&nbsp;</span>
+
+    {% if workouts.has_next %}
+        <a href="?page={{ workouts.next_page_number }}&{{ filter_query }}">&#9654;</a>
+        <span>&nbsp;&nbsp;</span>
+        <a href="?page={{ workouts.paginator.num_pages }}&{{ filter_query }}">&#9654;&#9654;</a>
     {% endif %}
 </div>
 {% endblock content %}

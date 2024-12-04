@@ -3,59 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    {% load static %}
 </head>
 <body>
-    <h1>Статистика клуба</h1>
+<div>
+    <button id="add-instructor-btn">Добавить</button>
+</div>
 
-    <h2>Клиенты</h2>
-    <ul>
-        {% for client in clients %}
-            <li>{{ client.fullname }} - Возраст: {{ client.age }} - Затраты: {{ client.expenses }}</li>
-        {% endfor %}
-    </ul>
+<!-- Форма для добавления нового сотрудника -->
+<div id="add-form" style="display: none;">
+    <form  id="instructor-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>ФИО: <input type="text" name="fullname" id="fullname" required></label><br>
+        <label>Фото: <input type="file" name="photo" id="photo" required></label><br>
+        <label>Возраст: <input type="number" name="age" id="age" min="18" required></label><br>
+        <label>Телефон: <input type="text" name="phone_number" id="phone-number" required></label>
+        <span id="phone-error" style="color: red; display: none;">Неверный формат телефона</span><br>
+        <label>URL: <input type="text" name="url" id="url" required></label>
+        <span id="url-error" style="color: red; display: none;">Неверный формат URL</span><br>
+        <label>Username: <input type="text" name="username" id="username" required></label><br>
+        <label>Password: <input type="password" name="password" id="password" required></label><br>
+        <button type="button" id="submit-instructor">Добавить в таблицу</button>
+    </form>
+</div>
 
-    <h2>Общая выручка</h2>
-    <p>{{ total_expenses }}</p>
+<form method="get">
+    <input type="text" name="search" placeholder="Поиск..." value="{{ request.GET.search }}">
+    <button type="submit">Найти</button>
+</form>
 
-    <h2>Средние затраты по клиентам</h2>
-    <p>{{ avg_expenses }}</p>
+<!-- Таблица инструкторов -->
+<form method="post" action="">
+    {% csrf_token %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th><a href="?sort=fullname&order={% if sort_order == 'asc' %}desc{% else %}asc{% endif %}">ФИО{% if sort_order == 'asc' %}▼{% else %}▲{% endif %}</a></th>
+                <th>Фото</th>
+                <th><a href="?sort=age&order={% if sort_order == 'asc' %}desc{% else %}asc{% endif %}">Возраст{% if sort_order == 'asc' %}▼{% else %}▲{% endif %}</a></th>
+                <th><a href="?sort=phone_number&order={% if sort_order == 'asc' %}desc{% else %}asc{% endif %}">Телефон{% if sort_order == 'asc' %}▼{% else %}▲{% endif %}</a></th>
+                <th>Username</th>
+                <th>Выбрать</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for instructor in instructors %}
+            <tr class="instructor-row">
+                <td>{{ instructor.fullname }}</td>
+                <td><img src="{{ instructor.photo.url }}" width="50" height="50"></td>
+                <td>{{ instructor.age }}</td>
+                <td>{{ instructor.phone_number }}</td>
+                <td>{{ instructor.user.username }}</td>
+                <td><input type="checkbox" name="selected" value="{{ instructor.id }}"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" name="reward_selected">Премировать</button>
+</form>
 
-    <h2>Средний возраст клиентов</h2>
-    <p>{{ avg_age }}</p>
+{% if reward_message %}
+    <p>{{ reward_message }}</p>
+{% endif %}
 
-    <h2>Занятия по группам за последние 30 дней</h2>
-    <ul>
-        {% for group in group_workouts %}
-            <li>{{ group.name }} - Итого: {{ group.total_workouts }}</li>
-        {% endfor %}
-    </ul>
+<!-- Блок для отображения подробностей инструктора -->
+<div id="instructor-details" style="display: none;">
+    <h3>Детали инструктора</h3>
+    <p><strong>ФИО:</strong> <span id="detail-fullname"></span></p>
+    <p><strong>Возраст:</strong> <span id="detail-age"></span></p>
+    <p><strong>Телефон:</strong> <span id="detail-phone"></span></p>
+    <p><strong>Username:</strong> <span id="detail-username"></span></p>
+</div>
 
-    <h2>Общий счет за услуги для каждого клиента</h2>
-    <ul>
-        {% for client in client_services %}
-            <li>{{ client.fullname }} - Итого: {{ client.total_services }}</li>
-        {% endfor %}
-    </ul>
-
-    <h2>Наиболее популярная категория</h2>
-    <ul>
-        {% for category in workout_categories %}
-            <li>{{ category.category }} - Количество: {{ category.count }}</li>
-        {% endfor %}
-    </ul>
-
-    <h2>Наиболее ценная категория</h2>
-    <ul>
-        {% for category in profitable_workouts %}
-            <li>{{ category.category }} - В сумме принесла: {{ category.total_revenue }}</li>
-        {% endfor %}
-    </ul>
-
-    <h1>Распределение клиентов по возрастам</h1>
-    <img src="{% url 'age_chart' %}"  width="800" height="600" alt="Age Distribution Chart">
-
-    <h1>Распределение занятий по групам</h1>
-    <img src="{% url 'workout_chart' %}" width="800" height="600" alt="Groups">
-
+<script src="{% static 'JS/site.js' %}"></script>
 </body>
 </html>

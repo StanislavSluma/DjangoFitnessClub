@@ -2,26 +2,44 @@
 {% block title %} Сотрудники {% endblock title %}
 {% block header %} Сотрудники {% endblock header %}
 {% block content %}
-    {% if employees %}
+    {% if page_obj %}
     <div class="instructors-container">
-        {% for el in employees%}
+        {% for el in page_obj %}
         <div class="instructor">
             {% if el.photo %}
-                <img src="{{el.photo.url}}">
+                <img src="{{ el.photo.url }}" alt="Фото инструктора">
             {% else %}
                 <p>Фото отсутствует(</p>
             {% endif %}
-            <p><b>ФИО: </b>{{el.fullname}}</p>
-            <p><b>Возраст: </b>{{el.age}}</p>
-            <p><b>Номер телефона: </b>{{el.phone_number}}</p>
+            <p><b>ФИО: </b>{{ el.fullname }}</p>
+            <p><b>Возраст: </b>{{ el.age }}</p>
+            <p><b>Номер телефона: </b>{{ el.phone_number }}</p>
             {% if el.about %}
-                <p><b>О себе: </b>{{el.about|truncatechars:100}}</p>
+                <p><b>О себе: </b>{{ el.about|truncatechars:100 }}</p>
             {% else %}
                 <p>Этот инструктор не оставил ничего о себе</p>
             {% endif %}
         </div>
-    {% endfor %}
+        {% endfor %}
     </div>
+
+    <!-- Пагинация -->
+    <div class="pagination">
+        <span class="page-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; Первая</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+            {% endif %}
+
+            <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
     {% else %}
     <p>Вы все уволены!</p>
     {% endif %}

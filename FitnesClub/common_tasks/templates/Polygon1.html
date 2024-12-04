@@ -11,11 +11,89 @@
     <link rel="icon" href="{% static 'Icon-logo.png' %}">
     <link rel="stylesheet" href="{% static 'CSS/polygon.css' %}">
     <title>Polygon</title>
+    <!-- exercise_4 -->
+    <style>
+        .control-panel {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+    <!-- exercise_4 -->
 </head>
 <body>
+<!-- exercise_4 -->
+<h1>Настройки отображения страницы</h1>
+<label>
+    <input type="checkbox" id="toggle-controls"> Показать настройки стиля
+</label>
+
+<div class="control-panel" id="control-panel">
+    <h3>Изменение стиля текста и фона</h3>
+
+    <label>
+        Размер текста:
+        <input type="range" id="font-size" min="12" max="40" value="16">
+    </label>
+
+    <label>
+        Цвет текста:
+        <input type="color" id="text-color" value="#000000">
+    </label>
+
+    <label>
+        Цвет фона:
+        <input type="color" id="bg-color" value="#ffffff">
+    </label>
+</div>
+<!-- exercise_4 -->
+
+<script>
+
+    const toggleControls = document.getElementById("toggle-controls");
+    const controlPanel = document.getElementById("control-panel");
+    const fontSizeControl = document.getElementById("font-size");
+    const textColorControl = document.getElementById("text-color");
+    const bgColorControl = document.getElementById("bg-color");
+
+    toggleControls.addEventListener("change", () => {
+        if (toggleControls.checked)
+        {
+            controlPanel.style.display = "block";
+            localStorage.setItem("fontSize", document.body.style.fontSize);
+            localStorage.setItem("textColor", document.body.style.color);
+            localStorage.setItem("bgColor", document.body.style.backgroundColor);
+        }
+        else
+        {
+            controlPanel.style.display = "none";
+            document.body.style.fontSize = localStorage.getItem("fontSize");
+            document.body.style.color = localStorage.getItem("textColor");
+            document.body.style.backgroundColor = localStorage.getItem("bgColor");
+        }
+    });
+
+
+    fontSizeControl.addEventListener("change", () => {
+        document.body.style.fontSize = fontSizeControl.value + "px";
+    });
+
+
+    textColorControl.addEventListener("input", () => {
+        document.body.style.color = textColorControl.value;
+    });
+
+
+    bgColorControl.addEventListener("input", () => {
+        document.body.style.backgroundColor = bgColorControl.value;
+    });
+</script>
+
+
 <p class="small-caps">This text is styled in small caps.</p>
 <p class="all-small-caps">This text uses all small caps variant.</p>
 <p class="normal-text">This text is displayed with normal font variant.</p>
+
+<img src="{% static 'pict.png' %}" alt="Пример изображения" style="width: 200px;">
 
 <ul class="custom-list">
     <li>Item 1</li>

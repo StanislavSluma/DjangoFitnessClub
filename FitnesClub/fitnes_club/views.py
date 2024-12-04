@@ -5,7 +5,8 @@ import random
 import re
 import io
 import matplotlib
-from django.db.models.fields import related
+
+from common_tasks.views import instructors
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -15,13 +16,20 @@ from FitnesClub.settings import BASE_DIR
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
+from django.core.paginator import Paginator
 from django.db import models
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.models import Group as gr, User
 from django.views.generic import DetailView
-from django.db.models import Avg, Count, Sum, Max
+from django.db.models import Avg, Count, Sum
 from datetime import timedelta
+from urllib.parse import urlencode
+from django.db.models import Q
+
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Client, Instructor, Workout, Group, ClubCard
 from common_tasks.models import CompanyInfo, Coupon
@@ -72,6 +80,7 @@ def signin_page(request):
 def login_page(request):
     logger.info("INFO: User in login page ")
     if request.method == 'POST':
+        print('login user post')
         username = request.POST['login']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
@@ -345,19 +354,32 @@ class InstructorDetailsView(DetailView):
 
 
 def workouts_page(request):
-    if request.method == 'POST':
-        form = FilterForm(request.POST)
-        if form.is_valid():
-            category = form.cleaned_data.get('category')
-            max_price = form.cleaned_data.get('max_price')
-            if max_price == None:
-                max_price = 2147483648
-            workouts = Workout.objects.filter(price__lte=max_price, category__in=category)
-            return render(request, "WorkoutsPage.html", {'form': form, 'workouts': workouts})
-    else:
-        form = FilterForm()
-        workouts = Workout.objects.all()
-    return render(request, "WorkoutsPage.html", {'form': form, 'workouts': workouts})
+    form = FilterForm(request.GET or None)
+    workouts = Workout.objects.all()
+    filters = {}
+
+    if form.is_valid():
+        category = form.cleaned_data.get('category')
+        max_price = form.cleaned_data.get('max_price')
+        if category:
+            workouts = workouts.filter(category__in=category)
+            filters['category'] = category
+        if max_price:
+            workouts = workouts.filter(price__lte=max_price)
+            filters['max_price'] = max_price
+
+    filter_query = urlencode(filters, doseq=True)
+
+    paginator = Paginator(workouts, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'form': form,
+        'workouts': page_obj,
+        'filter_query': filter_query  # Передаем строку с параметрами формы
+    }
+    return render(request, "WorkoutsPage.html", context)
 
 
 @login_required(login_url='/account/login')
@@ -443,46 +465,86 @@ def client_change_page(request):
 @login_required(login_url='admin/')
 @user_passes_test(lambda user: user.is_superuser, login_url='admin/')
 def super_user_page(request):
-
     #statistics
-    clients = Client.objects.all().order_by("fullname")
+    # clients = Client.objects.all().order_by("fullname")
+    #
+    # total_expenses = clients.aggregate(Sum("expenses"))
+    #
+    # avg_expenses = clients.aggregate(Avg("expenses"))
+    #
+    # avg_age = clients.aggregate(Avg("age"))["age__avg"]
+    #
+    # now = datetime.datetime.now()
+    # one_month_ago = now - timedelta(days=30)
+    # group_workouts = Group.objects.annotate(
+    #     total_workouts=Count("workout", filter=models.Q(workout__start_time__gte=one_month_ago, workout__start_time__lte=now))
+    # )
+    #
+    # client_services = clients.annotate(
+    #     total_services=Sum("group__workout__price")
+    # )
+    #
+    # workout_categories = Workout.objects.values("category").annotate(
+    #     count=Count("id")
+    # ).order_by("-count")
+    #
+    # profitable_workouts = Workout.objects.values("category").annotate(
+    #     total_revenue=Sum("price")
+    # ).order_by("-total_revenue")
+    search_query = request.GET.get('search', '')
+    sort_field = request.GET.get('sort', 'fullname')
+    sort_order = request.GET.get('order', 'asc')
 
-    total_expenses = clients.aggregate(Sum("expenses"))
+    # Направление сортировки
+    if sort_order == 'desc':
+        sort_field = '-' + sort_field
 
-    avg_expenses = clients.aggregate(Avg("expenses"))
+    instructors = Instructor.objects.filter(
+        Q(fullname__icontains=search_query) |
+        Q(phone_number__icontains=search_query)
+    ).order_by(sort_field)
 
-    avg_age = clients.aggregate(Avg("age"))["age__avg"]
+    if request.method == 'POST' and 'reward_selected' in request.POST:
+        selected_ids = request.POST.getlist('selected')
+        selected_instructors = Instructor.objects.filter(id__in=selected_ids)
+        rewarded_names = ', '.join([instructor.fullname for instructor in selected_instructors])
+        reward_message = f"Премированы: {rewarded_names}"
+        return render(request, 'SuperUserPage.html', {
+            "instructors": instructors,
+            "reward_message": reward_message,
+            "sort_order": sort_order,
+        })
 
-    now = datetime.datetime.now()
-    one_month_ago = now - timedelta(days=30)
-    group_workouts = Group.objects.annotate(
-        total_workouts=Count("workout", filter=models.Q(workout__start_time__gte=one_month_ago, workout__start_time__lte=now))
-    )
+    if request.method == "POST":
+        try:
+            fullname = request.POST.get("fullname")
+            age = request.POST.get("age")
+            phone_number = request.POST.get("phone_number")
+            url = request.POST.get("url")
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+            photo = request.FILES.get("photo")
 
-    client_services = clients.annotate(
-        total_services=Sum("group__workout__price")
-    )
+            user = User.objects.create_user(username=username, password=password)
 
-    workout_categories = Workout.objects.values("category").annotate(
-        count=Count("id")
-    ).order_by("-count")
+            instructor = Instructor(
+                fullname=fullname,
+                age=age,
+                phone_number=phone_number,
+                user=user,
+                photo=photo
+            )
+            instructor.save()
 
-    profitable_workouts = Workout.objects.values("category").annotate(
-        total_revenue=Sum("price")
-    ).order_by("-total_revenue")
+            return JsonResponse({"status": "success"})
 
+        except Exception as e:
+            return JsonResponse({"status": "error", "error": str(e)}, status=400)
 
-    context = {
-        "clients": clients,
-        "total_expenses": total_expenses["expenses__sum"],
-        "avg_expenses": avg_expenses["expenses__avg"],
-        "avg_age": avg_age,
-        "group_workouts": group_workouts,
-        "client_services": client_services,
-        "workout_categories": workout_categories,
-        "profitable_workouts": profitable_workouts,
-    }
-    return render(request, 'SuperUserPage.html', context)
+    return render(request, 'SuperUserPage.html', {
+        "instructors": instructors,
+        "sort_order": sort_order,
+    })
 
 
 def age_chart(request):
@@ -522,3 +584,56 @@ def workout_chart(request):
     plt.savefig(buffer, format='png')
     buffer.seek(0)
     return HttpResponse(buffer, content_type='image/png')
+
+
+# <h1>Статистика клуба</h1>
+#
+#     <h2>Клиенты</h2>
+#     <ul>
+#         {% for client in clients %}
+#             <li>{{ client.fullname }} - Возраст: {{ client.age }} - Затраты: {{ client.expenses }}</li>
+#         {% endfor %}
+#     </ul>
+#
+#     <h2>Общая выручка</h2>
+#     <p>{{ total_expenses }}</p>
+#
+#     <h2>Средние затраты по клиентам</h2>
+#     <p>{{ avg_expenses }}</p>
+#
+#     <h2>Средний возраст клиентов</h2>
+#     <p>{{ avg_age }}</p>
+#
+#     <h2>Занятия по группам за последние 30 дней</h2>
+#     <ul>
+#         {% for group in group_workouts %}
+#             <li>{{ group.name }} - Итого: {{ group.total_workouts }}</li>
+#         {% endfor %}
+#     </ul>
+#
+#     <h2>Общий счет за услуги для каждого клиента</h2>
+#     <ul>
+#         {% for client in client_services %}
+#             <li>{{ client.fullname }} - Итого: {{ client.total_services }}</li>
+#         {% endfor %}
+#     </ul>
+#
+#     <h2>Наиболее популярная категория</h2>
+#     <ul>
+#         {% for category in workout_categories %}
+#             <li>{{ category.category }} - Количество: {{ category.count }}</li>
+#         {% endfor %}
+#     </ul>
+#
+#     <h2>Наиболее ценная категория</h2>
+#     <ul>
+#         {% for category in profitable_workouts %}
+#             <li>{{ category.category }} - В сумме принесла: {{ category.total_revenue }}</li>
+#         {% endfor %}
+#     </ul>
+#
+#     <h1>Распределение клиентов по возрастам</h1>
+#     <img src="{% url 'age_chart' %}"  width="800" height="600" alt="Age Distribution Chart">
+#
+#     <h1>Распределение занятий по групам</h1>
+#     <img src="{% url 'workout_chart' %}" width="800" height="600" alt="Groups">
